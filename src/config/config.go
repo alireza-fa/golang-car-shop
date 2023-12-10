@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"github.com/dvln/yaml"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -65,7 +64,7 @@ func ParseConfig(b []byte) (*Config, error) {
 }
 
 func LoadConfig(filename string, fileType string) ([]byte, error) {
-	yamlFile, err := ioutil.ReadFile(filename + "." + fileType)
+	yamlFile, err := os.ReadFile(filename + "." + fileType)
 	if err != nil {
 		return nil, err
 	}

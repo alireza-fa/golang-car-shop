@@ -13,13 +13,20 @@ func InitialServer() {
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery())
 
-	v1 := r.Group("/api/v1/")
+	api := r.Group("/api")
+
+	v1 := api.Group("/v1")
 	{
-		// v1.GET("/health", func(c *gin.Context){
-		// 	c.JSON(http.StatusOK, "working!!")
-		// 	return
-		// })
 		health := v1.Group("/health")
+		test := v1.Group("/test")
+
+		routers.Health(health)
+		routers.TestRouter(test)
+	}
+
+	v2 := api.Group("/v2")
+	{
+		health := v2.Group("/health")
 		routers.Health(health)
 	}
 
