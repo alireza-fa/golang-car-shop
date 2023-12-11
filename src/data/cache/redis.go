@@ -9,7 +9,7 @@ import (
 
 var redisClient *redis.Client
 
-func InitRedis(cfg *config.Config) {
+func InitRedis(cfg *config.Config) error {
 	redisClient = redis.NewClient(&redis.Options{
 		Addr:               fmt.Sprintf("%s:%d", cfg.Redis.Host, cfg.Redis.Port),
 		Password:           cfg.Redis.Password,
@@ -22,6 +22,12 @@ func InitRedis(cfg *config.Config) {
 		IdleTimeout:        500 * time.Millisecond,
 		IdleCheckFrequency: cfg.Redis.IdleCheckFrequency * time.Millisecond,
 	})
+
+	_, err := redisClient.Ping().Result()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func GetRedis() *redis.Client {

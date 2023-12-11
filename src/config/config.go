@@ -22,12 +22,15 @@ type Config struct {
 		AllowOrigins string `yaml:"allowOrigins"`
 	}
 	Postgres struct {
-		Host     string `yaml:"host"`
-		Port     int    `yaml:"port"`
-		User     string `yaml:"user"`
-		Password string `yaml:"password"`
-		DbName   string `yaml:"dbName"`
-		SslMode  string `yaml:"sslMode"`
+		Host            string        `yaml:"host"`
+		Port            int           `yaml:"port"`
+		User            string        `yaml:"user"`
+		Password        string        `yaml:"password"`
+		DbName          string        `yaml:"dbName"`
+		SslMode         string        `yaml:"sslMode"`
+		MaxIdleConns    int           `yaml:"maxIdleConns"`
+		MaxOpenConns    int           `yaml:"maxOpenConns"`
+		ConnMaxLifetime time.Duration `yaml:"connMaxLifetime"`
 	}
 	Redis struct {
 		Host               string        `yaml:"host"`
