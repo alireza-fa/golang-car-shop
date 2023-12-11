@@ -12,7 +12,7 @@ import (
 )
 
 func InitialServer() {
-	cnf := config.GetConfig()
+	cfg := config.GetConfig()
 	r := gin.New()
 
 	val, ok := binding.Validator.Engine().(*validator.Validate)
@@ -21,6 +21,7 @@ func InitialServer() {
 		val.RegisterValidation("password", validations.PasswordValidator, true)
 	}
 
+	r.Use(middlewares.Cors(cfg))
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
 	api := r.Group("/api")
@@ -40,5 +41,5 @@ func InitialServer() {
 		routers.Health(health)
 	}
 
-	r.Run(fmt.Sprintf(":%d", cnf.Server.Port))
+	r.Run(fmt.Sprintf(":%d", cfg.Server.Port))
 }
