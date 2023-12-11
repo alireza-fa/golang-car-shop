@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/alireza-fa/golang-car-shop/api/helper"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -25,17 +26,12 @@ func NewTestHandler() *TestHandler {
 }
 
 func (h *TestHandler) Users(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"detail": "Users",
-	})
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse("users", true, 0))
 }
 
 func (h *TestHandler) UserById(c *gin.Context) {
 	id := c.Param("id")
-	c.JSON(http.StatusOK, gin.H{
-		"detail": "User by Id",
-		"id":     id,
-	})
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{"detail": "User by Id", "id": id}, true, 0))
 }
 
 func (h *TestHandler) UserByUsername(c *gin.Context) {
@@ -107,15 +103,10 @@ func (h *TestHandler) BodyBinder(c *gin.Context) {
 	p := personData{}
 	err := c.ShouldBindJSON(&p)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"person": p,
-		"result": "Body binder with ShouldBindJson",
-	})
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{"person": p, "result": "Body binder with ShouldBindJson"}, true, 0))
 }
 
 func (h *TestHandler) FormBinder(c *gin.Context) {
