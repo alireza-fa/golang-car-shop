@@ -22,3 +22,10 @@ redis:
   minIdleConnections: 100
   poolSize: 10
   poolTimeout: 15
+password:
+  includeChars: true
+  includeDigits: true
+  minLength: 6
+  maxLength: 64
+  includeUppercase: true
+  includeLowercase: true

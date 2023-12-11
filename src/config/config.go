@@ -37,6 +37,14 @@ type Config struct {
 		PoolSize           int    `yaml:"poolSize"`
 		PoolTimeout        int    `yaml:"poolTimeout"`
 	}
+	Password struct {
+		IncludeChars     bool `yaml:"includeChars"`
+		IncludeDigits    bool `yaml:"includeDigits"`
+		MinLength        int  `yaml:"minLength"`
+		MaxLength        int  `yaml:"maxLength"`
+		IncludeUppercase bool `yaml:"includeUppercase"`
+		IncludeLowercase bool `yaml:"includeLowercase"`
+	}
 }
 
 func GetConfig() *Config {
