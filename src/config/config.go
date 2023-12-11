@@ -5,6 +5,7 @@ import (
 	"github.com/dvln/yaml"
 	"log"
 	"os"
+	"time"
 )
 
 type Config struct {
@@ -29,13 +30,16 @@ type Config struct {
 		SslMode  string `yaml:"sslMode"`
 	}
 	Redis struct {
-		Host               string `yaml:"host"`
-		Port               int    `yaml:"port"`
-		Password           string `yaml:"password"`
-		Db                 int    `yaml:"db"`
-		MinIdleConnections int    `yaml:"minIdleConnections"`
-		PoolSize           int    `yaml:"poolSize"`
-		PoolTimeout        int    `yaml:"poolTimeout"`
+		Host               string        `yaml:"host"`
+		Port               int           `yaml:"port"`
+		Password           string        `yaml:"password"`
+		Db                 int           `yaml:"db"`
+		DialTimeout        time.Duration `json:"dialTimeout"`
+		ReadTimeout        time.Duration `json:"readTimeout"`
+		WriteTimeout       time.Duration `json:"writeTimeout"`
+		IdleCheckFrequency time.Duration `json:"idleCheckFrequency"`
+		PoolSize           int           `json:"poolSize"`
+		PoolTimeout        time.Duration `json:"poolTimeout"`
 	}
 	Password struct {
 		IncludeChars     bool `yaml:"includeChars"`
