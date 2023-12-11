@@ -3,14 +3,22 @@ package api
 import (
 	"fmt"
 	"github.com/alireza-fa/golang-car-shop/api/routers"
+	"github.com/alireza-fa/golang-car-shop/api/validations"
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 )
 
 func InitialServer() {
 	cnf := config.GetConfig()
-
 	r := gin.New()
+
+	val, ok := binding.Validator.Engine().(*validator.Validate)
+	if ok {
+		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
+	}
+
 	r.Use(gin.Logger(), gin.Recovery())
 
 	api := r.Group("/api")
