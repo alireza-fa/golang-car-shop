@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/alireza-fa/golang-car-shop/api/middlewares"
 	"github.com/alireza-fa/golang-car-shop/api/routers"
 	"github.com/alireza-fa/golang-car-shop/api/validations"
 	"github.com/alireza-fa/golang-car-shop/config"
@@ -19,7 +20,7 @@ func InitialServer() {
 		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
 	}
 
-	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
 	api := r.Group("/api")
 
