@@ -37,31 +37,35 @@ func (l *zapLogger) getLogLevel() zapcore.Level {
 }
 
 func (l *zapLogger) Init() {
-	fileName := l.cfg.Logger.FilePath
-	w := zapcore.AddSync(&lumberjack.Logger{
-		Filename:   fileName,
-		MaxSize:    1,
-		MaxAge:     20,
-		LocalTime:  true,
-		MaxBackups: 5,
-		Compress:   true,
+	once.Do(func() {
+		fileName := l.cfg.Logger.FilePath
+		w := zapcore.AddSync(&lumberjack.Logger{
+			Filename:   fileName,
+			MaxSize:    1,
+			MaxAge:     20,
+			LocalTime:  true,
+			MaxBackups: 5,
+			Compress:   true,
+		})
+
+		conf := zap.NewProductionEncoderConfig()
+		conf.EncodeTime = zapcore.ISO8601TimeEncoder
+
+		core := zapcore.NewCore(
+			zapcore.NewJSONEncoder(conf),
+			w,
+			l.getLogLevel())
+
+		logger := zap.New(core, zap.AddCaller(),
+			zap.AddCallerSkip(1),
+			zap.AddStacktrace(zapcore.ErrorLevel)).Sugar()
+
+		logger = logger.With("AppName", "MyApp", "LoggerName", "Zaplog")
+
+		zapSinLogger = logger
 	})
 
-	conf := zap.NewProductionEncoderConfig()
-	conf.EncodeTime = zapcore.ISO8601TimeEncoder
-
-	core := zapcore.NewCore(
-		zapcore.NewJSONEncoder(conf),
-		w,
-		l.getLogLevel())
-
-	logger := zap.New(core, zap.AddCaller(),
-		zap.AddCallerSkip(1),
-		zap.AddStacktrace(zapcore.ErrorLevel)).Sugar()
-
-	logger = logger.With("AppName", "MyApp", "LoggerName", "Zaplog")
-
-	l.logger = logger
+	l.logger = zapSinLogger
 }
 
 func (l *zapLogger) Debug(cat Category, sub SubCategory, msg string, extra map[ExtraKey]interface{}) {
