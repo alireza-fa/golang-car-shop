@@ -17,6 +17,7 @@ type Config struct {
 		FilePath string `yaml:"filePath"`
 		Encoding string `yaml:"encoding"`
 		Level    string `yaml:"level"`
+		Logger   string `yaml:"logger"`
 	}
 	Cors struct {
 		AllowOrigins string `yaml:"allowOrigins"`
