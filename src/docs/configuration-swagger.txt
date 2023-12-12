@@ -1,0 +1,20 @@
+How install swagger:
+    https://github.com/swaggo/swag?tab=readme-ov-file#getting-started
+
+1. go install github.com/swaggo/swag/cmd/swag@latest
+2. go get github.com/swaggo/gin-swagger
+3. go get github.com/swaggo/swag
+4. go get github.com/swaggo/files
+5. swag init -g cmd/main.go
+6. in api.go:
+   func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
+   	docs.SwaggerInfo.Title = "golang web api"
+   	docs.SwaggerInfo.Description = "golang web api"
+   	docs.SwaggerInfo.Version = "1.0"
+   	docs.SwaggerInfo.BasePath = "/api"
+   	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%d", cfg.Server.Port)
+   	docs.SwaggerInfo.Schemes = []string{"http"}
+
+   	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+   }
+7. swag init -g cmd.main.go
