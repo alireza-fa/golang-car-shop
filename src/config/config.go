@@ -15,7 +15,7 @@ type Config struct {
 	}
 	Logger struct {
 		FilePath string `yaml:"filePath"`
-		Encoding string `yaml:"Encoding"`
+		Encoding string `yaml:"encoding"`
 		Level    string `yaml:"level"`
 	}
 	Cors struct {
