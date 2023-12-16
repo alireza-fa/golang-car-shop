@@ -18,7 +18,7 @@ type BaseModel struct {
 	DeletedBy  *sql.NullInt64 `gorm:"null"`
 }
 
-func (m *BaseModel) BeforeCreate(tx *gorm.DB) {
+func (m *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 	value := tx.Statement.Context.Value("UserId")
 	var userId = -1
 	// TODO: check userId type

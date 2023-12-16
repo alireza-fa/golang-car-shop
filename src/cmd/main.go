@@ -5,6 +5,7 @@ import (
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/data/cache"
 	"github.com/alireza-fa/golang-car-shop/data/db"
+	"github.com/alireza-fa/golang-car-shop/data/db/migrations"
 	"github.com/alireza-fa/golang-car-shop/pkg/logging"
 )
 
@@ -27,7 +28,7 @@ func main() {
 	if err != nil {
 		logger.Fatal(logging.Postgres, logging.Startup, err.Error(), nil)
 	}
-	//migrations.Up_1()
+	migrations.Up_1()
 
 	api.InitialServer(cfg)
 }
