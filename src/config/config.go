@@ -58,6 +58,12 @@ type Config struct {
 		Digits     int           `yaml:"digits"`
 		Limiter    time.Duration `yaml:"limiter"`
 	}
+	Jwt struct {
+		Secret                     string        `yaml:"secret"`
+		RefreshSecret              string        `yaml:"refreshSecret"`
+		AccessTokenExpireDuration  time.Duration `yaml:"accessTokenExpireDuration"`
+		RefreshTokenExpireDuration time.Duration `yaml:"refreshTokenExpireDuration"`
+	}
 }
 
 func GetConfig() *Config {
