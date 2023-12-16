@@ -53,6 +53,11 @@ type Config struct {
 		IncludeUppercase bool `yaml:"includeUppercase"`
 		IncludeLowercase bool `yaml:"includeLowercase"`
 	}
+	Otp struct {
+		ExpireTime time.Duration `yaml:"expireTime"`
+		Digits     int           `yaml:"digits"`
+		Limiter    time.Duration `yaml:"limiter"`
+	}
 }
 
 func GetConfig() *Config {

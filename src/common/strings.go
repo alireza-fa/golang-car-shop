@@ -3,7 +3,9 @@ package common
 import (
 	"fmt"
 	"github.com/alireza-fa/golang-car-shop/config"
+	"math"
 	"math/rand"
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -133,4 +135,12 @@ func HasDigits(s string) bool {
 		}
 	}
 	return false
+}
+
+func GenerateOtp() string {
+	cfg := config.GetConfig()
+	minNum := int(math.Pow(10, float64(cfg.Otp.Digits-1)))
+	maxNum := int(math.Pow(10, float64(cfg.Otp.Digits)) - 1)
+	var num = rand.Intn(maxNum-minNum) + minNum
+	return strconv.Itoa(num)
 }
