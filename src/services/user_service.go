@@ -36,9 +36,16 @@ func NewUserService(cfg *config.Config) *UserService {
 
 // LoginByUsername Login by username
 func (s *UserService) LoginByUsername(req *dto.LoginByUsernameRequest) (*dto.TokenDetail, error) {
+	exists, err := s.existsByUsername(req.Username)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, &service_errors.ServiceError{EndUserMessage: service_errors.UsernameNotExists}
+	}
 	var user models.User
-	err := s.database.
-		Model(models.User{}).
+	err = s.database.
+		Model(&models.User{}).
 		Where("username = ?", req.Username).
 		Preload("UserRoles", func(tx *gorm.DB) *gorm.DB {
 			return tx.Preload("Role")
@@ -118,7 +125,7 @@ func (s *UserService) RegisterByUsername(req *dto.RegisterUserByUsernameRequest)
 }
 
 // RegisterLoginByMobileNumber register login by mobile number
-func (s *UserService) RegisterLoginByMobileNumber(req dto.RegisterLoginByMobileRequest) (*dto.TokenDetail, error) {
+func (s *UserService) RegisterLoginByMobileNumber(req *dto.RegisterLoginByMobileRequest) (*dto.TokenDetail, error) {
 	err := s.otpService.ValidateOtp(req.MobileNumber, req.Otp)
 	if err != nil {
 		return nil, err
@@ -263,7 +270,7 @@ func (s *UserService) existsByMobileNumber(mobileNumber string) (bool, error) {
 
 func (s *UserService) getDefaultRole() (roleId int, err error) {
 
-	if err = s.database.Model(&models.User{}).
+	if err = s.database.Model(&models.Role{}).
 		Select("id").
 		Where("name = ?", constants.DefaultRoleName).
 		First(&roleId).

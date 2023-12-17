@@ -53,7 +53,7 @@ func Get[T any](c *redis.Client, key string) (T, error) {
 	if err != nil {
 		return dest, err
 	}
-	err = json.Unmarshal([]byte(v), dest)
+	err = json.Unmarshal([]byte(v), &dest)
 	if err != nil {
 		return dest, err
 	}
