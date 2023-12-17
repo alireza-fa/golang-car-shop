@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"github.com/alireza-fa/golang-car-shop/api/helper"
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/constants"
@@ -49,5 +50,35 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 		c.Set(constants.ExpireTimeKey, claimMap[constants.ExpireTimeKey])
 
 		c.Next()
+	}
+}
+
+func Authorization(validRoles []string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if len(c.Keys) == 0 {
+			c.AbortWithStatusJSON(http.StatusForbidden,
+				helper.GenerateBaseResponse(nil, false, -300))
+			return
+		}
+		rolesVal := c.Keys[constants.RolesKey]
+		fmt.Println(rolesVal)
+		if rolesVal == nil {
+			c.AbortWithStatusJSON(http.StatusForbidden,
+				helper.GenerateBaseResponse(nil, false, -301))
+			return
+		}
+		roles := rolesVal.([]interface{})
+		val := map[string]int{}
+		for _, item := range roles {
+			val[item.(string)] = 0
+		}
+
+		for _, item := range validRoles {
+			if _, ok := val[item]; ok {
+				c.Next()
+				return
+			}
+		}
+		c.AbortWithStatusJSON(http.StatusForbidden, helper.GenerateBaseResponse(nil, false, -302))
 	}
 }
