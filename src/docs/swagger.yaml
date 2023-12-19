@@ -1,4 +1,20 @@
 definitions:
+  dto.CountryResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.CreateUpdateCountryRequest:
+    properties:
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
   dto.GetOtpRequest:
     properties:
       mobileNumber:
@@ -106,6 +122,134 @@ definitions:
 info:
   contact: {}
 paths:
+  /v1/countries:
+    post:
+      consumes:
+      - application/json
+      description: Create country
+      parameters:
+      - description: country
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUpdateCountryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: create a country
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/dto.CountryResponse'
+              type: object
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/helper.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/helper.BaseHttpResponse'
+      summary: Create country
+      tags:
+      - Countries
+  /v1/countries/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete country
+      parameters:
+      - description: country id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: delete a country
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/helper.BaseHttpResponse'
+      summary: Delete country
+      tags:
+      - Countries
+    get:
+      consumes:
+      - application/json
+      description: GetById country
+      parameters:
+      - description: country id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get country by id
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/dto.CountryResponse'
+              type: object
+        "204":
+          description: delete a country
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/helper.BaseHttpResponse'
+      summary: GetById country
+      tags:
+      - Countries
+    patch:
+      consumes:
+      - application/json
+      description: Update country
+      parameters:
+      - description: country request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUpdateCountryRequest'
+      - description: country id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: update a country
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/dto.CountryResponse'
+              type: object
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/helper.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/helper.BaseHttpResponse'
+      summary: Update country
+      tags:
+      - Countries
   /v1/health/:
     get:
       consumes:

@@ -38,15 +38,15 @@ func (s *CountryService) Create(ctx context.Context, req *dto.CreateUpdateCountr
 	country.CreatedBy = int(userId.(float64))
 
 	tx := s.database.WithContext(ctx).Begin()
-	err := tx.Create(country).Error
+	err := tx.Create(&country).Error
 	if err != nil {
 		tx.Rollback()
 		s.logger.Error(logging.Postgres, logging.Insert, "Create", nil)
 		return nil, err
 	}
 	tx.Commit()
-	// TODO: get by id
-	return nil, nil
+
+	return s.GetById(ctx, country.Id)
 }
 
 // Update country
@@ -56,25 +56,25 @@ func (s *CountryService) Update(ctx context.Context, req *dto.CreateUpdateCountr
 		return nil, &service_errors.ServiceError{EndUserMessage: service_errors.PermissionDenied}
 	}
 
-	countryUpdate := map[string]interface{}{
-		"modified_at": sql.NullTime{Valid: true, Time: time.Now().UTC()},
-		"modified_by": &sql.NullInt64{Valid: true, Int64: int64(userId.(float64))},
-		"name":        req.Name,
+	updateMap := map[string]interface{}{
+		"Name":        req.Name,
+		"modified_by": &sql.NullInt64{Int64: int64(userId.(float64)), Valid: true},
+		"modified_at": sql.NullTime{Time: time.Now().UTC(), Valid: true},
 	}
 
-	tx := s.database.Where(ctx).Begin()
+	tx := s.database.WithContext(ctx).Begin()
 	if err := tx.
 		Model(&models.Country{}).
 		Where("id = ? AND deleted_by is null", countryId).
-		Updates(countryUpdate).
+		Updates(updateMap).
 		Error; err != nil {
 		tx.Rollback()
 		s.logger.Error(logging.Postgres, logging.Update, "Update", nil)
 		return nil, err
 	}
 	tx.Commit()
-	// TODO: get by id
-	return nil, nil
+
+	return s.GetById(ctx, countryId)
 }
 
 // Delete country
@@ -89,7 +89,7 @@ func (s *CountryService) Delete(ctx context.Context, countryId int) error {
 
 	deleteCountry := map[string]interface{}{
 		"deleted_at": sql.NullTime{Time: time.Now().UTC(), Valid: true},
-		"deleted_by": &sql.NullInt64{Int64: int64(userId.(float64))},
+		"deleted_by": &sql.NullInt64{Int64: int64(userId.(float64)), Valid: true},
 	}
 
 	if err := tx.
