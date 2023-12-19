@@ -3,7 +3,7 @@ package models
 type Country struct {
 	BaseModel
 	Name   string `gorm:"size:10;type:string;not null;"`
-	cities []City
+	Cities []City
 }
 
 type City struct {
