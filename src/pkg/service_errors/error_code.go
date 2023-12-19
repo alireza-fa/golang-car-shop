@@ -16,4 +16,8 @@ const (
 	EmailExists       = "Email exists"
 	UsernameExists    = "Username exists"
 	UsernameNotExists = "Username not exists"
+	PermissionDenied  = "Permission denied"
+
+	// DB
+	RecordNotFound = "record not found"
 )
