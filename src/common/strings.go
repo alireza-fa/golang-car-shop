@@ -5,6 +5,7 @@ import (
 	"github.com/alireza-fa/golang-car-shop/config"
 	"math"
 	"math/rand"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
@@ -17,6 +18,9 @@ var (
 	numberSet      = "0123456789"
 	allCharSet     = lowerCharSet + upperCharSet + specialCharSet + numberSet
 )
+
+var matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
+var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
 
 func CheckPassword(password string) bool {
 	cfg := config.GetConfig()
@@ -143,4 +147,11 @@ func GenerateOtp() string {
 	maxNum := int(math.Pow(10, float64(cfg.Otp.Digits)) - 1)
 	var num = rand.Intn(maxNum-minNum) + minNum
 	return strconv.Itoa(num)
+}
+
+// ToSnakeCase To snake case: CountryId -> country_id
+func ToSnakeCase(str string) string {
+	snake := matchFirstCap.ReplaceAllString(str, "${1}_${2}")
+	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
+	return strings.ToLower(snake)
 }
