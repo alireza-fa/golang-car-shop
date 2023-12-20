@@ -141,6 +141,7 @@ func Paginate[T any, Tr any](pagination *dto.PaginationInputWithFilter, preloads
 		Model(model).
 		Where(query).
 		Count(&totalRows)
+
 	err := db.
 		Where(query).
 		Offset(pagination.GetOffset()).
@@ -148,6 +149,7 @@ func Paginate[T any, Tr any](pagination *dto.PaginationInputWithFilter, preloads
 		Order(sort).
 		Find(&items).
 		Error
+
 	if err != nil {
 		return nil, err
 	}
@@ -156,6 +158,7 @@ func Paginate[T any, Tr any](pagination *dto.PaginationInputWithFilter, preloads
 		return nil, err
 	}
 	return NewPagedList(rItems, totalRows, pagination.PageNumber, int64(pagination.PageSize)), err
+
 }
 
 func getQuery[T any](filter *dto.DynamicFilter) string {
@@ -170,13 +173,13 @@ func getQuery[T any](filter *dto.DynamicFilter) string {
 				fld.Name = common.ToSnakeCase(fld.Name)
 				switch filter.Type {
 				case "contains":
-					query = append(query, fmt.Sprintf("%s Ilike '%%%s%%'", fld.Name, filter.From))
+					query = append(query, fmt.Sprintf("%s ILike '%%%s%%'", fld.Name, filter.From))
 				case "notContains":
-					query = append(query, fmt.Sprintf("%s not Ilike '%%%s%%'", fld.Name, filter.From))
-				case "startWith":
-					query = append(query, fmt.Sprintf("%s Ilike '%s%%'", fld.Name, filter.From))
-				case "endWith":
-					query = append(query, fmt.Sprintf("%s Ilike '%%%s'", fld.Name, filter.From))
+					query = append(query, fmt.Sprintf("%s not ILike '%%%s%%'", fld.Name, filter.From))
+				case "startsWith":
+					query = append(query, fmt.Sprintf("%s ILike '%s%%'", fld.Name, filter.From))
+				case "endsWith":
+					query = append(query, fmt.Sprintf("%s ILike '%%%s'", fld.Name, filter.From))
 				case "equals":
 					query = append(query, fmt.Sprintf("%s = '%s'", fld.Name, filter.From))
 				case "notEqual":
@@ -185,9 +188,9 @@ func getQuery[T any](filter *dto.DynamicFilter) string {
 					query = append(query, fmt.Sprintf("%s < %s", fld.Name, filter.From))
 				case "lessThanOrEqual":
 					query = append(query, fmt.Sprintf("%s <= %s", fld.Name, filter.From))
-				case "greeterThan":
+				case "greaterThan":
 					query = append(query, fmt.Sprintf("%s > %s", fld.Name, filter.From))
-				case "greeterThanOrEqual":
+				case "greaterThanOrEqual":
 					query = append(query, fmt.Sprintf("%s >= %s", fld.Name, filter.From))
 				case "inRange":
 					if fld.Type.Kind() == reflect.String {
