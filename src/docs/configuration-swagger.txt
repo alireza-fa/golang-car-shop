@@ -18,3 +18,5 @@ How install swagger:
    	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
    }
 7. swag init -g cmd.main.go
+
+8. swag init -g cmd/main.go --parseDependency --parseInternal
