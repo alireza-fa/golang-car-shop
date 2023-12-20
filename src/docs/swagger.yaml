@@ -1,12 +1,34 @@
 definitions:
-  dto.CountryResponse:
+  api_handlers.personData:
+    properties:
+      first_name:
+        maxLength: 10
+        minLength: 3
+        type: string
+      last_name:
+        maxLength: 10
+        minLength: 3
+        type: string
+      password:
+        type: string
+      phone_number:
+        maxLength: 11
+        minLength: 11
+        type: string
+    required:
+    - first_name
+    - last_name
+    - password
+    - phone_number
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse:
     properties:
       id:
         type: integer
       name:
         type: string
     type: object
-  dto.CreateUpdateCountryRequest:
+  github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest:
     properties:
       name:
         maxLength: 20
@@ -15,7 +37,21 @@ definitions:
     required:
     - name
     type: object
-  dto.GetOtpRequest:
+  github_com_alireza-fa_golang-car-shop_api_dto.Filter:
+    properties:
+      filterType:
+        description: text number
+        type: string
+      from:
+        type: string
+      to:
+        type: string
+      type:
+        description: contains notContains equals notEqual startWith lessThan lessThanOrEqual
+          greaterThan greaterThanOrEqual inRange endWith
+        type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.GetOtpRequest:
     properties:
       mobileNumber:
         maxLength: 11
@@ -24,7 +60,7 @@ definitions:
     required:
     - mobileNumber
     type: object
-  dto.LoginByUsernameRequest:
+  github_com_alireza-fa_golang-car-shop_api_dto.LoginByUsernameRequest:
     properties:
       password:
         minLength: 6
@@ -36,7 +72,39 @@ definitions:
     - password
     - username
     type: object
-  dto.RegisterLoginByMobileRequest:
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CountryResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter:
+    properties:
+      filter:
+        additionalProperties:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.Filter'
+        type: object
+      pageNumber:
+        type: integer
+      pageSize:
+        type: integer
+      sort:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.Sort'
+        type: array
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.RegisterLoginByMobileRequest:
     properties:
       mobileNumber:
         maxLength: 11
@@ -50,7 +118,7 @@ definitions:
     - mobileNumber
     - otp
     type: object
-  dto.RegisterUserByUsernameRequest:
+  github_com_alireza-fa_golang-car-shop_api_dto.RegisterUserByUsernameRequest:
     properties:
       email:
         minLength: 6
@@ -73,29 +141,14 @@ definitions:
     - password
     - username
     type: object
-  handlers.personData:
+  github_com_alireza-fa_golang-car-shop_api_dto.Sort:
     properties:
-      first_name:
-        maxLength: 10
-        minLength: 3
+      colId:
         type: string
-      last_name:
-        maxLength: 10
-        minLength: 3
+      sort:
         type: string
-      password:
-        type: string
-      phone_number:
-        maxLength: 11
-        minLength: 11
-        type: string
-    required:
-    - first_name
-    - last_name
-    - password
-    - phone_number
     type: object
-  helper.BaseHttpResponse:
+  github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse:
     properties:
       error: {}
       result: {}
@@ -105,10 +158,10 @@ definitions:
         type: boolean
       validationErrors:
         items:
-          $ref: '#/definitions/validations.ValidationError'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_validations.ValidationError'
         type: array
     type: object
-  validations.ValidationError:
+  github_com_alireza-fa_golang-car-shop_api_validations.ValidationError:
     properties:
       message:
         type: string
@@ -133,7 +186,7 @@ paths:
         name: Request
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateUpdateCountryRequest'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest'
       produces:
       - application/json
       responses:
@@ -141,19 +194,21 @@ paths:
           description: create a country
           schema:
             allOf:
-            - $ref: '#/definitions/helper.BaseHttpResponse'
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/dto.CountryResponse'
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
               type: object
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
       summary: Create country
       tags:
       - Countries
@@ -176,7 +231,9 @@ paths:
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
       summary: Delete country
       tags:
       - Countries
@@ -197,17 +254,19 @@ paths:
           description: get country by id
           schema:
             allOf:
-            - $ref: '#/definitions/helper.BaseHttpResponse'
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/dto.CountryResponse'
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
               type: object
         "204":
           description: delete a country
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
       summary: GetById country
       tags:
       - Countries
@@ -221,7 +280,7 @@ paths:
         name: Request
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateUpdateCountryRequest'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest'
       - description: country id
         in: path
         name: id
@@ -234,20 +293,55 @@ paths:
           description: update a country
           schema:
             allOf:
-            - $ref: '#/definitions/helper.BaseHttpResponse'
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/dto.CountryResponse'
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
               type: object
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
       summary: Update country
+      tags:
+      - Countries
+  /v1/countries/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: GetByFilter country
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get country by id
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CountryResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: GetByFilter country
       tags:
       - Countries
   /v1/health/:
@@ -261,11 +355,11 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: Health Check
   /v1/test/binder/body:
     post:
@@ -278,18 +372,18 @@ paths:
         name: person
         required: true
         schema:
-          $ref: '#/definitions/handlers.personData'
+          $ref: '#/definitions/api_handlers.personData'
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "401":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       security:
       - AuthBearer: []
       summary: BodyBinder
@@ -312,11 +406,11 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: UserById
       tags:
       - Test
@@ -331,22 +425,22 @@ paths:
         name: Request
         required: true
         schema:
-          $ref: '#/definitions/dto.RegisterLoginByMobileRequest'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.RegisterLoginByMobileRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: RegisterLoginByMobilePhone
       tags:
       - Users
@@ -361,22 +455,22 @@ paths:
         name: Request
         required: true
         schema:
-          $ref: '#/definitions/dto.LoginByUsernameRequest'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.LoginByUsernameRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: LoginByUsername
       tags:
       - Users
@@ -391,22 +485,22 @@ paths:
         name: Request
         required: true
         schema:
-          $ref: '#/definitions/dto.RegisterUserByUsernameRequest'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.RegisterUserByUsernameRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: RegisterByUsername
       tags:
       - Users
@@ -421,22 +515,22 @@ paths:
         name: Request
         required: true
         schema:
-          $ref: '#/definitions/dto.GetOtpRequest'
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GetOtpRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Success
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "400":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
         "409":
           description: Failed
           schema:
-            $ref: '#/definitions/helper.BaseHttpResponse'
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: Send otp to user
       tags:
       - Users

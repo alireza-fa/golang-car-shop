@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/v1/countries": {
             "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
                 "description": "Create country",
                 "consumes": [
                     "application/json"
@@ -35,7 +40,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateUpdateCountryRequest"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest"
                         }
                     }
                 ],
@@ -45,13 +50,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.BaseHttpResponse"
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "result": {
-                                            "$ref": "#/definitions/dto.CountryResponse"
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse"
                                         }
                                     }
                                 }
@@ -61,13 +66,70 @@ const docTemplate = `{
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/countries/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "GetByFilter country",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "GetByFilter country",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get country by id",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CountryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -75,6 +137,11 @@ const docTemplate = `{
         },
         "/v1/countries/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
                 "description": "GetById country",
                 "consumes": [
                     "application/json"
@@ -101,13 +168,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.BaseHttpResponse"
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "result": {
-                                            "$ref": "#/definitions/dto.CountryResponse"
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse"
                                         }
                                     }
                                 }
@@ -120,12 +187,17 @@ const docTemplate = `{
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
                 "description": "Delete country",
                 "consumes": [
                     "application/json"
@@ -153,12 +225,17 @@ const docTemplate = `{
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
                 "description": "Update country",
                 "consumes": [
                     "application/json"
@@ -177,7 +254,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateUpdateCountryRequest"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest"
                         }
                     },
                     {
@@ -194,13 +271,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.BaseHttpResponse"
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "result": {
-                                            "$ref": "#/definitions/dto.CountryResponse"
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse"
                                         }
                                     }
                                 }
@@ -210,13 +287,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -236,13 +313,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -273,7 +350,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.personData"
+                            "$ref": "#/definitions/api_handlers.personData"
                         }
                     }
                 ],
@@ -281,13 +358,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "401": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -319,13 +396,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -351,7 +428,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.RegisterLoginByMobileRequest"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.RegisterLoginByMobileRequest"
                         }
                     }
                 ],
@@ -359,19 +436,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -397,7 +474,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginByUsernameRequest"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.LoginByUsernameRequest"
                         }
                     }
                 ],
@@ -405,19 +482,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -443,7 +520,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.RegisterUserByUsernameRequest"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.RegisterUserByUsernameRequest"
                         }
                     }
                 ],
@@ -451,19 +528,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -489,7 +566,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.GetOtpRequest"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GetOtpRequest"
                         }
                     }
                 ],
@@ -497,19 +574,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -517,7 +594,36 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.CountryResponse": {
+        "api_handlers.personData": {
+            "type": "object",
+            "required": [
+                "first_name",
+                "last_name",
+                "password",
+                "phone_number"
+            ],
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 3
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 3
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -528,7 +634,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CreateUpdateCountryRequest": {
+        "github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -541,7 +647,26 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.GetOtpRequest": {
+        "github_com_alireza-fa_golang-car-shop_api_dto.Filter": {
+            "type": "object",
+            "properties": {
+                "filterType": {
+                    "description": "text number",
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "contains notContains equals notEqual startWith lessThan lessThanOrEqual greaterThan greaterThanOrEqual inRange endWith",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.GetOtpRequest": {
             "type": "object",
             "required": [
                 "mobileNumber"
@@ -554,7 +679,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.LoginByUsernameRequest": {
+        "github_com_alireza-fa_golang-car-shop_api_dto.LoginByUsernameRequest": {
             "type": "object",
             "required": [
                 "password",
@@ -571,7 +696,56 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.RegisterLoginByMobileRequest": {
+        "github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CountryResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.Filter"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.Sort"
+                    }
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.RegisterLoginByMobileRequest": {
             "type": "object",
             "required": [
                 "mobileNumber",
@@ -590,7 +764,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.RegisterUserByUsernameRequest": {
+        "github_com_alireza-fa_golang-car-shop_api_dto.RegisterUserByUsernameRequest": {
             "type": "object",
             "required": [
                 "firstName",
@@ -621,36 +795,18 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.personData": {
+        "github_com_alireza-fa_golang-car-shop_api_dto.Sort": {
             "type": "object",
-            "required": [
-                "first_name",
-                "last_name",
-                "password",
-                "phone_number"
-            ],
             "properties": {
-                "first_name": {
-                    "type": "string",
-                    "maxLength": 10,
-                    "minLength": 3
-                },
-                "last_name": {
-                    "type": "string",
-                    "maxLength": 10,
-                    "minLength": 3
-                },
-                "password": {
+                "colId": {
                     "type": "string"
                 },
-                "phone_number": {
-                    "type": "string",
-                    "maxLength": 11,
-                    "minLength": 11
+                "sort": {
+                    "type": "string"
                 }
             }
         },
-        "helper.BaseHttpResponse": {
+        "github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse": {
             "type": "object",
             "properties": {
                 "error": {},
@@ -664,12 +820,12 @@ const docTemplate = `{
                 "validationErrors": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/validations.ValidationError"
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_validations.ValidationError"
                     }
                 }
             }
         },
-        "validations.ValidationError": {
+        "github_com_alireza-fa_golang-car-shop_api_validations.ValidationError": {
             "type": "object",
             "properties": {
                 "message": {
