@@ -31,6 +31,7 @@ func NewCountryHandler(cfg *config.Config) *CountryHandler {
 // @Failure 400 {object} helper.BaseHttpResponse "Failed"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
 // @Router /v1/countries [post]
+// @Security AuthBearer
 func (h *CountryHandler) Create(c *gin.Context) {
 	req := dto.CreateUpdateCountryRequest{}
 	err := c.ShouldBindJSON(&req)
@@ -62,6 +63,7 @@ func (h *CountryHandler) Create(c *gin.Context) {
 // @Failure 400 {object} helper.BaseHttpResponse "Failed"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
 // @Router /v1/countries/{id} [patch]
+// @Security AuthBearer
 func (h *CountryHandler) Update(c *gin.Context) {
 	countryId, err := strconv.Atoi(c.Params.ByName("id"))
 	if err != nil && countryId == 0 {
@@ -97,6 +99,7 @@ func (h *CountryHandler) Update(c *gin.Context) {
 // @Success 204 "delete a country"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
 // @Router /v1/countries/{id} [delete]
+// @Security AuthBearer
 func (h *CountryHandler) Delete(c *gin.Context) {
 	countryId, err := strconv.Atoi(c.Params.ByName("id"))
 	if err != nil && countryId == 0 {
@@ -125,6 +128,7 @@ func (h *CountryHandler) Delete(c *gin.Context) {
 // @Success 204 "delete a country"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
 // @Router /v1/countries/{id} [get]
+// @Security AuthBearer
 func (h *CountryHandler) GetById(c *gin.Context) {
 	countryId, err := strconv.Atoi(c.Params.ByName("id"))
 	if err != nil {
@@ -139,5 +143,33 @@ func (h *CountryHandler) GetById(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+}
+
+// GetByFilter godoc
+// @Summary GetByFilter country
+// @Description GetByFilter country
+// @Tags Countries
+// @Accept json
+// @Produce json
+// @Param Request body dto.PaginationInputWithFilter true "Request"
+// @Success 200 {object} helper.BaseHttpResponse{result=dto.PagedList[dto.CountryResponse]} "get country by id"
+// @Success 400 {object} helper.BaseHttpResponse "Bad request"
+// @Router /v1/countries/get-by-filter [post]
+// @Security AuthBearer
+func (h *CountryHandler) GetByFilter(c *gin.Context) {
+	req := dto.PaginationInputWithFilter{}
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest,
+			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+		return
+	}
+	res, err := h.service.GetByFilter(c, &req)
+	if err != nil {
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
+			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+		return
+	}
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
 }
