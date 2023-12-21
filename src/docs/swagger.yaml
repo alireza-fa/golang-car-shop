@@ -21,12 +21,36 @@ definitions:
     - password
     - phone_number
     type: object
-  github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse:
+  github_com_alireza-fa_golang-car-shop_api_dto.CityResponse:
     properties:
+      country:
+        $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
       id:
         type: integer
       name:
         type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse:
+    properties:
+      cities:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CityResponse'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreateCityRequest:
+    properties:
+      countryId:
+        type: integer
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - countryId
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest:
     properties:
@@ -71,6 +95,23 @@ definitions:
     required:
     - password
     - username
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CityResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CityResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CountryResponse:
     properties:
@@ -148,6 +189,15 @@ definitions:
       sort:
         type: string
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdateCityRequest:
+    properties:
+      countryId:
+        type: integer
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
+    type: object
   github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse:
     properties:
       error: {}
@@ -175,6 +225,179 @@ definitions:
 info:
   contact: {}
 paths:
+  /v1/cities:
+    post:
+      consumes:
+      - application/json
+      description: Create cities
+      parameters:
+      - description: city
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateCityRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: create a new city
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CityResponse'
+              type: object
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create cities
+      tags:
+      - Cities
+  /v1/cities/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete city
+      parameters:
+      - description: city id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: delete a city
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete city
+      tags:
+      - Cities
+    get:
+      consumes:
+      - application/json
+      description: GetById cities
+      parameters:
+      - description: city id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get city by id
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
+              type: object
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: GetById cities
+      tags:
+      - Cities
+    patch:
+      consumes:
+      - application/json
+      description: Update city
+      parameters:
+      - description: city request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateCityRequest'
+      - description: city id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: update city
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CityResponse'
+              type: object
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update city
+      tags:
+      - Cities
+  /v1/cities/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: GetByFilter cities
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get country by id
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CityResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "409":
+          description: Failed
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: GetByFilter cities
+      tags:
+      - Cities
   /v1/countries:
     post:
       consumes:
@@ -260,7 +483,7 @@ paths:
                   $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CountryResponse'
               type: object
         "204":
-          description: delete a country
+          description: get a country
         "409":
           description: Failed
           schema:

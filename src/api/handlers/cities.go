@@ -10,30 +10,28 @@ import (
 	"strconv"
 )
 
-type CountryHandler struct {
-	service *services.CountryService
+type CityHandler struct {
+	service *services.CityService
 }
 
-func NewCountryHandler(cfg *config.Config) *CountryHandler {
-	return &CountryHandler{
-		service: services.NewCountryService(cfg),
-	}
+func NewCityHandler(cfg *config.Config) *CityHandler {
+	return &CityHandler{service: services.NewCityService(cfg)}
 }
 
 // Create godoc
-// @Summary Create country
-// @Description Create country
-// @Tags Countries
+// @Summary Create cities
+// @Description Create cities
+// @Tags Cities
 // @Accept json
 // @Produce json
-// @Param Request body dto.CreateUpdateCountryRequest true "country"
-// @Success 201 {object} helper.BaseHttpResponse{result=dto.CountryResponse} "create a country"
+// @param Request body dto.CreateCityRequest true "city"
+// @Success 201 {object} helper.BaseHttpResponse{result=dto.CityResponse} "create a new city"
 // @Failure 400 {object} helper.BaseHttpResponse "Failed"
-// @Failure 409 {object} helper.BaseHttpResponse "Failed"
-// @Router /v1/countries [post]
+// @Failure 409 {object} helper.BaseHttpResponse
+// @Router /v1/cities [post]
 // @Security AuthBearer
-func (h *CountryHandler) Create(c *gin.Context) {
-	req := dto.CreateUpdateCountryRequest{}
+func (h *CityHandler) Create(c *gin.Context) {
+	req := dto.CreateCityRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
@@ -52,26 +50,25 @@ func (h *CountryHandler) Create(c *gin.Context) {
 }
 
 // Update godoc
-// @Summary Update country
-// @Description Update country
-// @Tags Countries
+// @Summary Update city
+// @Description Update city
+// @Tags Cities
 // @Accept json
 // @Produce json
-// @Param Request body dto.CreateUpdateCountryRequest true "country request"
-// @Param id path int true "country id"
-// @Success 201 {object} helper.BaseHttpResponse{result=dto.CountryResponse} "update a country"
+// @Param Request body dto.UpdateCityRequest true "city request"
+// @Param id path int true "city id"
+// @Success 200 {object} helper.BaseHttpResponse{result=dto.CityResponse} "update city"
 // @Failure 400 {object} helper.BaseHttpResponse "Failed"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
-// @Router /v1/countries/{id} [patch]
+// @Router /v1/cities/{id} [patch]
 // @Security AuthBearer
-func (h *CountryHandler) Update(c *gin.Context) {
-	countryId, err := strconv.Atoi(c.Params.ByName("id"))
-	if err != nil && countryId == 0 {
+func (h *CityHandler) Update(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-
-	req := dto.CreateUpdateCountryRequest{}
+	req := dto.UpdateCityRequest{}
 	err = c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
@@ -79,7 +76,7 @@ func (h *CountryHandler) Update(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.Update(c, &req, countryId)
+	res, err := h.service.Update(c, id, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
 			helper.GenerateBaseResponseWithError(nil, false, -1, err))
@@ -90,53 +87,50 @@ func (h *CountryHandler) Update(c *gin.Context) {
 }
 
 // Delete godoc
-// @Summary Delete country
-// @Description Delete country
-// @Tags Countries
+// @Summary Delete city
+// @Description Delete city
+// @Tags Cities
 // @Accept json
 // @Produce json
-// @Param id path int true "country id"
-// @Success 204 "delete a country"
+// @Param id path int true "city id"
+// @Success 204 {object} helper.BaseHttpResponse "delete a city"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
-// @Router /v1/countries/{id} [delete]
+// @Router /v1/cities/{id} [delete]
 // @Security AuthBearer
-func (h *CountryHandler) Delete(c *gin.Context) {
-	countryId, err := strconv.Atoi(c.Params.ByName("id"))
-	if err != nil && countryId == 0 {
+func (h *CityHandler) Delete(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
-		return
 	}
 
-	err = h.service.Delete(c, countryId)
+	err = h.service.Delete(c, id)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
 			helper.GenerateBaseResponseWithError(nil, false, -1, err))
 		return
 	}
-
 	c.JSON(http.StatusNoContent, helper.GenerateBaseResponse(nil, true, 0))
 }
 
 // GetById godoc
-// @Summary GetById country
-// @Description GetById country
-// @Tags Countries
+// @Summary GetById cities
+// @Description GetById cities
+// @Tags Cities
 // @Accept json
 // @Produce json
-// @Param id path int true "country id"
-// @Success 200 {object} helper.BaseHttpResponse{result=dto.CountryResponse} "get country by id"
-// @Success 204 "get a country"
+// @Param id path int true "city id"
+// @Success 200 {object} helper.BaseHttpResponse{result=dto.CountryResponse} "get city by id"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
-// @Router /v1/countries/{id} [get]
+// @Router /v1/cities/{id} [get]
 // @Security AuthBearer
-func (h *CountryHandler) GetById(c *gin.Context) {
-	countryId, err := strconv.Atoi(c.Params.ByName("id"))
+func (h *CityHandler) GetById(c *gin.Context) {
+	id, err := strconv.Atoi(c.Params.ByName("id"))
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
-	res, err := h.service.GetById(c, countryId)
+	res, err := h.service.GetById(c, id)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
 			helper.GenerateBaseResponseWithError(nil, false, -1, err))
@@ -147,17 +141,18 @@ func (h *CountryHandler) GetById(c *gin.Context) {
 }
 
 // GetByFilter godoc
-// @Summary GetByFilter country
-// @Description GetByFilter country
-// @Tags Countries
+// @Summary GetByFilter cities
+// @Description GetByFilter cities
+// @Tags Cities
 // @Accept json
 // @Produce json
 // @Param Request body dto.PaginationInputWithFilter true "Request"
-// @Success 200 {object} helper.BaseHttpResponse{result=dto.PagedList[dto.CountryResponse]} "get country by id"
-// @Success 400 {object} helper.BaseHttpResponse "Bad request"
-// @Router /v1/countries/get-by-filter [post]
+// @Success 200 {object} helper.BaseHttpResponse{result=dto.PagedList[dto.CityResponse]} "get country by id"
+// @Failure 400 {object} helper.BaseHttpResponse "Bad request"
+// @Failure 409 {object} helper.BaseHttpResponse "Failed"
+// @Router /v1/cities/get-by-filter [post]
 // @Security AuthBearer
-func (h *CountryHandler) GetByFilter(c *gin.Context) {
+func (h *CityHandler) GetByFilter(c *gin.Context) {
 	req := dto.PaginationInputWithFilter{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -165,11 +160,13 @@ func (h *CountryHandler) GetByFilter(c *gin.Context) {
 			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
 		return
 	}
+
 	res, err := h.service.GetByFilter(c, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
 			helper.GenerateBaseResponseWithError(nil, false, -1, err))
 		return
 	}
+
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
 }
