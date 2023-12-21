@@ -9,6 +9,7 @@ import (
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/constants"
 	"github.com/alireza-fa/golang-car-shop/data/db"
+	"github.com/alireza-fa/golang-car-shop/data/models"
 	"github.com/alireza-fa/golang-car-shop/pkg/logging"
 	"github.com/alireza-fa/golang-car-shop/pkg/service_errors"
 	"gorm.io/gorm"
@@ -46,7 +47,8 @@ func (s *BaseService[T, Tc, Tu, Tr]) Create(ctx context.Context, req *Tc) (*Tr, 
 		return nil, err
 	}
 	tx.Commit()
-	return common.TypeConverter[Tr](model)
+	bm, _ := common.TypeConverter[models.BaseModel](model)
+	return s.GetById(ctx, bm.Id)
 }
 
 func (s *BaseService[T, Tc, Tu, Tr]) Update(ctx context.Context, id int, req *Tu) (*Tr, error) {
@@ -80,8 +82,6 @@ func (s *BaseService[T, Tc, Tu, Tr]) Delete(ctx context.Context, id int) error {
 		"deleted_by": &sql.NullInt64{Int64: int64(ctx.Value(constants.UserIdKey).(float64)), Valid: true},
 		"deleted_at": sql.NullTime{Time: time.Now().UTC(), Valid: true},
 	}
-	deleteMap["modified_by"] = &sql.NullInt64{Int64: int64(ctx.Value(constants.UserIdKey).(float64)), Valid: true}
-	deleteMap["modified_at"] = sql.NullTime{Time: time.Now().UTC(), Valid: true}
 
 	if ctx.Value(constants.UserIdKey) == nil {
 		return &service_errors.ServiceError{EndUserMessage: service_errors.PermissionDenied}
