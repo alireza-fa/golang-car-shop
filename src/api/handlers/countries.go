@@ -1,13 +1,9 @@
 package handlers
 
 import (
-	"github.com/alireza-fa/golang-car-shop/api/dto"
-	"github.com/alireza-fa/golang-car-shop/api/helper"
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/services"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
 )
 
 type CountryHandler struct {
@@ -33,22 +29,7 @@ func NewCountryHandler(cfg *config.Config) *CountryHandler {
 // @Router /v1/countries [post]
 // @Security AuthBearer
 func (h *CountryHandler) Create(c *gin.Context) {
-	req := dto.CreateUpdateCountryRequest{}
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
-		return
-	}
-
-	res, err := h.service.Create(c, &req)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
-		return
-	}
-
-	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, helper.Success))
+	Create(c, h.service.Create)
 }
 
 // Update godoc
@@ -65,28 +46,7 @@ func (h *CountryHandler) Create(c *gin.Context) {
 // @Router /v1/countries/{id} [patch]
 // @Security AuthBearer
 func (h *CountryHandler) Update(c *gin.Context) {
-	countryId, err := strconv.Atoi(c.Params.ByName("id"))
-	if err != nil && countryId == 0 {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-
-	req := dto.CreateUpdateCountryRequest{}
-	err = c.ShouldBindJSON(&req)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
-		return
-	}
-
-	res, err := h.service.Update(c, &req, countryId)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
-		return
-	}
-
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
+	Update(c, h.service.Update)
 }
 
 // Delete godoc
@@ -101,20 +61,7 @@ func (h *CountryHandler) Update(c *gin.Context) {
 // @Router /v1/countries/{id} [delete]
 // @Security AuthBearer
 func (h *CountryHandler) Delete(c *gin.Context) {
-	countryId, err := strconv.Atoi(c.Params.ByName("id"))
-	if err != nil && countryId == 0 {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-
-	err = h.service.Delete(c, countryId)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
-		return
-	}
-
-	c.JSON(http.StatusNoContent, helper.GenerateBaseResponse(nil, true, helper.Success))
+	Delete(c, h.service.Delete)
 }
 
 // GetById godoc
@@ -130,20 +77,7 @@ func (h *CountryHandler) Delete(c *gin.Context) {
 // @Router /v1/countries/{id} [get]
 // @Security AuthBearer
 func (h *CountryHandler) GetById(c *gin.Context) {
-	countryId, err := strconv.Atoi(c.Params.ByName("id"))
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-
-	res, err := h.service.GetById(c, countryId)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
-		return
-	}
-
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
+	GetById(c, h.service.GetById)
 }
 
 // GetByFilter godoc
@@ -158,18 +92,5 @@ func (h *CountryHandler) GetById(c *gin.Context) {
 // @Router /v1/countries/get-by-filter [post]
 // @Security AuthBearer
 func (h *CountryHandler) GetByFilter(c *gin.Context) {
-	req := dto.PaginationInputWithFilter{}
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
-		return
-	}
-	res, err := h.service.GetByFilter(c, &req)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
-		return
-	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
+	GetByFilter(c, h.service.GetByFilter)
 }
