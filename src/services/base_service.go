@@ -51,14 +51,18 @@ func (s *BaseService[T, Tc, Tu, Tr]) Create(ctx context.Context, req *Tc) (*Tr, 
 
 func (s *BaseService[T, Tc, Tu, Tr]) Update(ctx context.Context, id int, req *Tu) (*Tr, error) {
 	updateMap, _ := common.TypeConverter[map[string]interface{}](req)
-	(*updateMap)["modified_by"] = &sql.NullInt64{Int64: int64(ctx.Value(constants.UserIdKey).(float64)), Valid: true}
-	(*updateMap)["modified_at"] = sql.NullTime{Time: time.Now().UTC(), Valid: true}
+	snakeMap := map[string]interface{}{}
+	for k, v := range *updateMap {
+		snakeMap[common.ToSnakeCase(k)] = v
+	}
+	snakeMap["modified_by"] = &sql.NullInt64{Int64: int64(ctx.Value(constants.UserIdKey).(float64)), Valid: true}
+	snakeMap["modified_at"] = sql.NullTime{Time: time.Now().UTC(), Valid: true}
 	model := new(T)
 	tx := s.Database.WithContext(ctx).Begin()
 	if err := tx.
 		Model(model).
 		Where("id = ? and deleted_by is null", id).
-		Updates(*updateMap).Error; err != nil {
+		Updates(snakeMap).Error; err != nil {
 		tx.Rollback()
 		s.Logger.Error(logging.Postgres, logging.Update, err.Error(), nil)
 		return nil, err
@@ -96,7 +100,8 @@ func (s *BaseService[T, Tc, Tu, Tr]) Delete(ctx context.Context, id int) error {
 
 func (s *BaseService[T, Tc, Tu, Tr]) GetById(ctx context.Context, id int) (*Tr, error) {
 	model := new(T)
-	err := s.Database.
+	database := Preload(s.Database, s.Preloads)
+	err := database.
 		Where("id = ? and deleted_by is null", id).
 		First(model).
 		Error

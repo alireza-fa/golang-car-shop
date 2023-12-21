@@ -20,6 +20,14 @@ func NewCountryHandler(cfg *config.Config) *CountryHandler {
 	}
 }
 
+type CityHandler struct {
+	service *services.CityService
+}
+
+func NewCityHandler(cfg *config.Config) *CityHandler {
+	return &CityHandler{service: services.NewCityService(cfg)}
+}
+
 // Create godoc
 // @Summary Create country
 // @Description Create country
