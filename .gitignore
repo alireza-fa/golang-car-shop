@@ -142,3 +142,5 @@ fabric.properties
 *.log
 
 /.idea
+
+/src/uploads

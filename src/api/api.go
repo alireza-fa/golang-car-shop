@@ -43,17 +43,29 @@ func RegisterRouter(r *gin.Engine) {
 
 	v1 := api.Group("/v1")
 	{
+		// Test
 		health := v1.Group("/health")
 		test := v1.Group("/test")
+
+		// Users
 		users := v1.Group("/users")
+
+		// Base
 		countries := v1.Group("/countries", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		cities := v1.Group("/cities", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
+		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 
+		// Test
 		routers.Health(health)
 		routers.TestRouter(test)
+
+		// User
 		routers.User(users, conf)
+
+		// Base
 		routers.Country(countries, conf)
 		routers.City(cities, conf)
+		routers.File(files, conf)
 	}
 
 	v2 := api.Group("/v2")
