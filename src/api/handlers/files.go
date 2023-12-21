@@ -44,7 +44,7 @@ func (h *FileHandler) Create(c *gin.Context) {
 	err := c.ShouldBind(&upload)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
 	req := dto.CreateFileRequest{}
@@ -54,17 +54,17 @@ func (h *FileHandler) Create(c *gin.Context) {
 	req.Name, err = saveUploadFile(upload.File, req.Directory)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
 	res, err := h.service.Create(c, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
-	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 // Update godoc
@@ -91,18 +91,18 @@ func (h *FileHandler) Update(c *gin.Context) {
 	err = c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
 
 	res, err := h.service.Update(c, id, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 // Delete godoc
@@ -127,25 +127,25 @@ func (h *FileHandler) Delete(c *gin.Context) {
 	if err != nil {
 		logger.Error(logging.IO, logging.RemoveFile, err.Error(), nil)
 		c.AbortWithStatusJSON(http.StatusNotFound,
-			helper.GenerateBaseResponse(nil, false, -1))
+			helper.GenerateBaseResponse(nil, false, helper.NotFoundError))
 		return
 	}
 	err = os.Remove(fmt.Sprintf("%s/%s", file.Directory, file.Name))
 	if err != nil {
 		logger.Error(logging.IO, logging.RemoveFile, err.Error(), nil)
 		c.AbortWithStatusJSON(http.StatusNotFound,
-			helper.GenerateBaseResponse(nil, false, -1))
+			helper.GenerateBaseResponse(nil, false, helper.NotFoundError))
 		return
 	}
 
 	err = h.service.Delete(c, id)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusNoContent, helper.GenerateBaseResponse(nil, true, 0))
+	c.JSON(http.StatusNoContent, helper.GenerateBaseResponse(nil, true, helper.Success))
 }
 
 // GetById godoc
@@ -168,11 +168,11 @@ func (h *FileHandler) GetById(c *gin.Context) {
 	res, err := h.service.GetById(c, id)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 // GetByFilter godoc
@@ -192,18 +192,18 @@ func (h *FileHandler) GetByFilter(c *gin.Context) {
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
 
 	res, err := h.service.GetByFilter(c, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 func saveUploadFile(file *multipart.FileHeader, directory string) (string, error) {

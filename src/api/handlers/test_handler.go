@@ -26,7 +26,7 @@ func NewTestHandler() *TestHandler {
 }
 
 func (h *TestHandler) Users(c *gin.Context) {
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse("users", true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse("users", true, helper.Success))
 }
 
 // UserById godoc
@@ -41,7 +41,7 @@ func (h *TestHandler) Users(c *gin.Context) {
 // @Router /v1/test/users/{id} [get]
 func (h *TestHandler) UserById(c *gin.Context) {
 	id := c.Param("id")
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{"detail": "User by Id", "id": id}, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{"detail": "User by Id", "id": id}, true, helper.Success))
 }
 
 func (h *TestHandler) UserByUsername(c *gin.Context) {
@@ -124,10 +124,10 @@ func (h *TestHandler) BodyBinder(c *gin.Context) {
 	p := personData{}
 	err := c.ShouldBindJSON(&p)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{"person": p, "result": "Body binder with ShouldBindJson"}, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{"person": p, "result": "Body binder with ShouldBindJson"}, true, helper.Success))
 }
 
 func (h *TestHandler) FormBinder(c *gin.Context) {

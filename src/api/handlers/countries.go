@@ -37,18 +37,18 @@ func (h *CountryHandler) Create(c *gin.Context) {
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
 
 	res, err := h.service.Create(c, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 // Update godoc
@@ -75,18 +75,18 @@ func (h *CountryHandler) Update(c *gin.Context) {
 	err = c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
 
 	res, err := h.service.Update(c, &req, countryId)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 // Delete godoc
@@ -110,11 +110,11 @@ func (h *CountryHandler) Delete(c *gin.Context) {
 	err = h.service.Delete(c, countryId)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusNoContent, helper.GenerateBaseResponse(nil, true, 0))
+	c.JSON(http.StatusNoContent, helper.GenerateBaseResponse(nil, true, helper.Success))
 }
 
 // GetById godoc
@@ -139,11 +139,11 @@ func (h *CountryHandler) GetById(c *gin.Context) {
 	res, err := h.service.GetById(c, countryId)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
 }
 
 // GetByFilter godoc
@@ -162,14 +162,14 @@ func (h *CountryHandler) GetByFilter(c *gin.Context) {
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithValidationError(nil, false, helper.ValidationError, err))
 		return
 	}
 	res, err := h.service.GetByFilter(c, &req)
 	if err != nil {
 		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, -1, err))
+			helper.GenerateBaseResponseWithError(nil, false, helper.InternalError, err))
 		return
 	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, helper.Success))
 }
