@@ -27,6 +27,7 @@ func createTables(database *gorm.DB) {
 	tables = addNewTable(database, models.Country{}, tables)
 	tables = addNewTable(database, models.City{}, tables)
 	tables = addNewTable(database, models.PersianYear{}, tables)
+	tables = addNewTable(database, models.File{}, tables)
 
 	// Property
 	tables = addNewTable(database, models.PropertyCategory{}, tables)
