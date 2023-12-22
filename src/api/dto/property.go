@@ -1,6 +1,6 @@
 package dto
 
-type CratePropertyCategoryRequest struct {
+type CreatePropertyCategoryRequest struct {
 	Name string `json:"name" binding:"required,alpha,min=3,max=50"`
 	Icon string `json:"icon" binding:"max=1000"`
 }
