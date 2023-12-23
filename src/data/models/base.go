@@ -4,9 +4,9 @@ import "time"
 
 type Country struct {
 	BaseModel
-	Name      string `gorm:"size:10;type:string;not null;"`
+	Name      string `gorm:"size:25;type:string;not null;"`
 	Cities    []City
-	companies []Company
+	Companies []Company
 }
 
 type City struct {
