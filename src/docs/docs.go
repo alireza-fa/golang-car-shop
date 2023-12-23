@@ -1430,6 +1430,281 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/gearboxes/": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Create a Gearbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gearboxes"
+                ],
+                "summary": "Create a Gearbox",
+                "parameters": [
+                    {
+                        "description": "Create a Gearbox",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateGearboxRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Gearbox response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/gearboxes/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get Gearboxes",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gearboxes"
+                ],
+                "summary": "Get Gearboxes",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gearbox response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_GearboxResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/gearboxes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get a Gearbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gearboxes"
+                ],
+                "summary": "Get a Gearbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gearbox response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Update a Gearbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gearboxes"
+                ],
+                "summary": "Update a Gearbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update a Gearbox",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateGearboxRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gearbox response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Delete a Gearbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gearboxes"
+                ],
+                "summary": "Delete a Gearbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/health/": {
             "get": {
                 "description": "Health Check",
@@ -2418,6 +2693,19 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_alireza-fa_golang-car-shop_api_dto.CreateGearboxRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "minLength": 3
+                }
+            }
+        },
         "github_com_alireza-fa_golang-car-shop_api_dto.CreatePropertyCategoryRequest": {
             "type": "object",
             "required": [
@@ -2516,6 +2804,17 @@ const docTemplate = `{
                 },
                 "type": {
                     "description": "contains notContains equals notEqual startWith lessThan lessThanOrEqual greaterThan greaterThanOrEqual inRange endWith",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -2667,6 +2966,32 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.FileResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_GearboxResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse"
                     }
                 },
                 "pageNumber": {
@@ -2906,6 +3231,19 @@ const docTemplate = `{
             "properties": {
                 "description": {
                     "type": "string"
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.UpdateGearboxRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "minLength": 3
                 }
             }
         },

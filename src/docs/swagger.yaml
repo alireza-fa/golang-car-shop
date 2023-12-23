@@ -93,6 +93,15 @@ definitions:
     - countryId
     - name
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreateGearboxRequest:
+    properties:
+      name:
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreatePropertyCategoryRequest:
     properties:
       icon:
@@ -163,6 +172,13 @@ definitions:
       type:
         description: contains notContains equals notEqual startWith lessThan lessThanOrEqual
           greaterThan greaterThanOrEqual inRange endWith
+        type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse:
+    properties:
+      id:
+        type: integer
+      name:
         type: string
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.GetOtpRequest:
@@ -263,6 +279,23 @@ definitions:
       items:
         items:
           $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.FileResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_GearboxResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse'
         type: array
       pageNumber:
         type: integer
@@ -425,6 +458,15 @@ definitions:
     properties:
       description:
         type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdateGearboxRequest:
+    properties:
+      name:
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - name
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.UpdatePropertyCategoryRequest:
     properties:
@@ -1343,6 +1385,169 @@ paths:
       summary: GetByFilter files
       tags:
       - Files
+  /v1/gearboxes/:
+    post:
+      consumes:
+      - application/json
+      description: Create a Gearbox
+      parameters:
+      - description: Create a Gearbox
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateGearboxRequest'
+      responses:
+        "201":
+          description: Gearbox response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a Gearbox
+      tags:
+      - Gearboxes
+  /v1/gearboxes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Gearbox
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a Gearbox
+      tags:
+      - Gearboxes
+    get:
+      consumes:
+      - application/json
+      description: Get a Gearbox
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Gearbox response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a Gearbox
+      tags:
+      - Gearboxes
+    put:
+      consumes:
+      - application/json
+      description: Update a Gearbox
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a Gearbox
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateGearboxRequest'
+      responses:
+        "200":
+          description: Gearbox response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a Gearbox
+      tags:
+      - Gearboxes
+  /v1/gearboxes/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get Gearboxes
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: Gearbox response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get Gearboxes
+      tags:
+      - Gearboxes
   /v1/health/:
     get:
       consumes:
