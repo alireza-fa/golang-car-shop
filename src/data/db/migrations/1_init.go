@@ -19,6 +19,7 @@ func Up_1() {
 	createDefaultUserInformation(database)
 	createCountry(database)
 	createPropertyCategory(database)
+	createCarType(database)
 }
 
 func createTables(database *gorm.DB) {
@@ -271,5 +272,20 @@ func createProperty(database *gorm.DB, cat string) {
 
 	for _, prop := range *props {
 		database.Create(&prop)
+	}
+}
+
+func createCarType(database *gorm.DB) {
+	count := 0
+	database.
+		Model(&models.CarType{}).
+		Select("count(*)").
+		Find(&count)
+	if count == 0 {
+		database.Create(&models.CarType{Name: "Crossover"})
+		database.Create(&models.CarType{Name: "Sedan"})
+		database.Create(&models.CarType{Name: "Sports"})
+		database.Create(&models.CarType{Name: "Coupe"})
+		database.Create(&models.CarType{Name: "Hatchback"})
 	}
 }
