@@ -64,6 +64,7 @@ func RegisterRouter(r *gin.Engine) {
 
 		// Properties
 		propertyCategories := v1.Group("/property-categories", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
+		properties := v1.Group("/properties", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 
 		// Base
 		countries := v1.Group("/countries", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
@@ -84,6 +85,7 @@ func RegisterRouter(r *gin.Engine) {
 
 		// Property
 		routers.PropertyCategory(propertyCategories, conf)
+		routers.Property(properties, conf)
 	}
 
 	v2 := api.Group("/v2")

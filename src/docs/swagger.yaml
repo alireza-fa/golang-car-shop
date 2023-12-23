@@ -64,6 +64,30 @@ definitions:
     required:
     - name
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreatePropertyRequest:
+    properties:
+      categoryId:
+        type: integer
+      dataType:
+        maxLength: 15
+        type: string
+      description:
+        maxLength: 1000
+        type: string
+      icon:
+        maxLength: 1000
+        type: string
+      name:
+        maxLength: 50
+        minLength: 3
+        type: string
+      unit:
+        maxLength: 15
+        type: string
+    required:
+    - categoryId
+    - name
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreateUpdateCountryRequest:
     properties:
       name:
@@ -189,6 +213,23 @@ definitions:
       totalRows:
         type: integer
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PropertyResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PropertyResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter:
     properties:
       filter:
@@ -297,6 +338,25 @@ definitions:
       icon:
         type: string
       name:
+        type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdatePropertyRequest:
+    properties:
+      categoryId:
+        type: integer
+      dataType:
+        maxLength: 15
+        type: string
+      description:
+        maxLength: 1000
+        type: string
+      icon:
+        maxLength: 1000
+        type: string
+      name:
+        type: string
+      unit:
+        maxLength: 15
         type: string
     type: object
   github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse:
@@ -881,6 +941,169 @@ paths:
           schema:
             $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
       summary: Health Check
+  /v1/properties/:
+    post:
+      consumes:
+      - application/json
+      description: Create a Property
+      parameters:
+      - description: Create a Property
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreatePropertyRequest'
+      responses:
+        "201":
+          description: Property response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a Property
+      tags:
+      - Properties
+  /v1/properties/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Property
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a Property
+      tags:
+      - Properties
+    get:
+      consumes:
+      - application/json
+      description: Get a Property
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Property response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a Property
+      tags:
+      - Properties
+    put:
+      consumes:
+      - application/json
+      description: Update a Property
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a Property
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdatePropertyRequest'
+      responses:
+        "200":
+          description: Property response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a Property
+      tags:
+      - Properties
+  /v1/properties/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get Properties
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: Property response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get Properties
+      tags:
+      - Properties
   /v1/property-categories:
     get:
       description: Create a PropertyCategory
