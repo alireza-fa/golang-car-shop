@@ -71,11 +71,12 @@ func RegisterRouter(r *gin.Engine) {
 		cities := v1.Group("/cities", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		companies := v1.Group("/companies", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+		colors := v1.Group("/colors", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
 		// Car
 		carTypes := v1.Group("/car-types", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		gearboxes := v1.Group("/gearboxes", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
-		carModls := v1.Group("/car-models", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+		carModels := v1.Group("/car-models", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
 		// Test
 		routers.Health(health)
@@ -89,6 +90,7 @@ func RegisterRouter(r *gin.Engine) {
 		routers.City(cities, conf)
 		routers.File(files, conf)
 		routers.Company(companies, conf)
+		routers.Color(colors, conf)
 
 		// Property
 		routers.PropertyCategory(propertyCategories, conf)
@@ -97,7 +99,7 @@ func RegisterRouter(r *gin.Engine) {
 		// Car
 		routers.CarType(carTypes, conf)
 		routers.Gearbox(gearboxes, conf)
-		routers.CarModel(carModls, conf)
+		routers.CarModel(carModels, conf)
 	}
 
 	v2 := api.Group("/v2")

@@ -855,6 +855,281 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/colors/": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Create a Color",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Colors"
+                ],
+                "summary": "Create a Color",
+                "parameters": [
+                    {
+                        "description": "Create a Color",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateColorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Color response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/colors/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get Colors",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Colors"
+                ],
+                "summary": "Get Colors",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Color response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_ColorResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/colors/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get a Color",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Colors"
+                ],
+                "summary": "Get a Color",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Color response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Update a Color",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Colors"
+                ],
+                "summary": "Update a Color",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update a Color",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateColorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Color response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Delete a Color",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Colors"
+                ],
+                "summary": "Delete a Color",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/companies/": {
             "post": {
                 "security": [
@@ -2905,6 +3180,20 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse": {
+            "type": "object",
+            "properties": {
+                "hexCode": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_alireza-fa_golang-car-shop_api_dto.CompanyResponse": {
             "type": "object",
             "properties": {
@@ -2945,6 +3234,9 @@ const docTemplate = `{
         "github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelRequest": {
             "type": "object",
             "required": [
+                "carTypeId",
+                "companyId",
+                "gearboxId",
                 "name"
             ],
             "properties": {
@@ -2989,6 +3281,25 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.CreateColorRequest": {
+            "type": "object",
+            "required": [
+                "hexCode",
+                "name"
+            ],
+            "properties": {
+                "hexCode": {
+                    "type": "string",
+                    "maxLength": 7,
+                    "minLength": 7
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 15,
                     "minLength": 3
                 }
             }
@@ -3231,6 +3542,32 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CityResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_ColorResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse"
                     }
                 },
                 "pageNumber": {
@@ -3569,6 +3906,21 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.UpdateColorRequest": {
+            "type": "object",
+            "properties": {
+                "hexCode": {
+                    "type": "string",
+                    "maxLength": 7,
+                    "minLength": 7
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 15,
                     "minLength": 3
                 }
             }
