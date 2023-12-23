@@ -72,6 +72,9 @@ func RegisterRouter(r *gin.Engine) {
 		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		companies := v1.Group("/companies", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
+		// Car
+		carTypes := v1.Group("/car-types", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+
 		// Test
 		routers.Health(health)
 		routers.TestRouter(test)
@@ -88,6 +91,9 @@ func RegisterRouter(r *gin.Engine) {
 		// Property
 		routers.PropertyCategory(propertyCategories, conf)
 		routers.Property(properties, conf)
+
+		// Car
+		routers.CarType(carTypes, conf)
 	}
 
 	v2 := api.Group("/v2")

@@ -28,7 +28,7 @@ func (s *CarTypeService) Create(ctx context.Context, req *dto.CreateCarTypeReque
 }
 
 // Update carType
-func (s *CarTypeService) Update(ctx context.Context, id int, req *dto.UpdateCarTypeRequest) (*dto.CarTypeResponse, error) {
+func (s *CarTypeService) Update(ctx context.Context, req *dto.UpdateCarTypeRequest, id int) (*dto.CarTypeResponse, error) {
 	return s.base.Update(ctx, id, req)
 }
 
