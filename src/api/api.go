@@ -75,6 +75,7 @@ func RegisterRouter(r *gin.Engine) {
 		// Car
 		carTypes := v1.Group("/car-types", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		gearboxes := v1.Group("/gearboxes", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+		carModls := v1.Group("/car-models", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
 		// Test
 		routers.Health(health)
@@ -96,6 +97,7 @@ func RegisterRouter(r *gin.Engine) {
 		// Car
 		routers.CarType(carTypes, conf)
 		routers.Gearbox(gearboxes, conf)
+		routers.CarModel(carModls, conf)
 	}
 
 	v2 := api.Group("/v2")
