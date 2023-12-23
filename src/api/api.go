@@ -70,6 +70,7 @@ func RegisterRouter(r *gin.Engine) {
 		countries := v1.Group("/countries", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		cities := v1.Group("/cities", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
+		companies := v1.Group("/companies", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
 		// Test
 		routers.Health(health)
@@ -82,6 +83,7 @@ func RegisterRouter(r *gin.Engine) {
 		routers.Country(countries, conf)
 		routers.City(cities, conf)
 		routers.File(files, conf)
+		routers.Company(companies, conf)
 
 		// Property
 		routers.PropertyCategory(propertyCategories, conf)
