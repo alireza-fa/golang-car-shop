@@ -20,6 +20,7 @@ func Up_1() {
 	createCountry(database)
 	createPropertyCategory(database)
 	createCarType(database)
+	createGearbox(database)
 }
 
 func createTables(database *gorm.DB) {
@@ -287,5 +288,17 @@ func createCarType(database *gorm.DB) {
 		database.Create(&models.CarType{Name: "Sports"})
 		database.Create(&models.CarType{Name: "Coupe"})
 		database.Create(&models.CarType{Name: "Hatchback"})
+	}
+}
+
+func createGearbox(database *gorm.DB) {
+	count := 0
+	database.
+		Model(&models.Gearbox{}).
+		Select("count(*)").
+		Find(&count)
+	if count == 0 {
+		database.Create(&models.Gearbox{Name: "Manual"})
+		database.Create(&models.Gearbox{Name: "Automatic"})
 	}
 }
