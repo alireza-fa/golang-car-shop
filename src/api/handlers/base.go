@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	_ "github.com/alireza-fa/golang-car-shop/api/dto"
 	"github.com/alireza-fa/golang-car-shop/api/helper"
 	"github.com/gin-gonic/gin"
 	"net/http"

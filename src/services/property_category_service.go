@@ -19,7 +19,7 @@ func NewPropertyCategoryService(cfg *config.Config) *PropertyCategoryService {
 			Database: db.GetDb(),
 			Logger:   logging.NewLogger(cfg),
 			Preloads: []preload{
-				{string: "properties"},
+				{string: "Properties"},
 			},
 		},
 	}
@@ -31,7 +31,7 @@ func (s *PropertyCategoryService) Create(ctx context.Context, req *dto.CreatePro
 }
 
 // Update category
-func (s *PropertyCategoryService) Update(ctx context.Context, id int, req *dto.UpdatePropertyCategoryRequest) (*dto.PropertyCategoryResponse, error) {
+func (s *PropertyCategoryService) Update(ctx context.Context, req *dto.UpdatePropertyCategoryRequest, id int) (*dto.PropertyCategoryResponse, error) {
 	return s.base.Update(ctx, id, req)
 }
 

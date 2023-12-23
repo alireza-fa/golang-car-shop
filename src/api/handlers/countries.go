@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	_ "github.com/alireza-fa/golang-car-shop/api/dto"
+	_ "github.com/alireza-fa/golang-car-shop/api/helper"
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/services"
 	"github.com/gin-gonic/gin"
@@ -56,7 +58,7 @@ func (h *CountryHandler) Update(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "country id"
-// @Success 204 "delete a country"
+// @Success 204 {object} helper.BaseHttpResponse "delete a country"
 // @Failure 409 {object} helper.BaseHttpResponse "Failed"
 // @Router /v1/countries/{id} [delete]
 // @Security AuthBearer

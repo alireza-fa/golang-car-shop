@@ -7,12 +7,15 @@ import (
 	"github.com/alireza-fa/golang-car-shop/api/validations"
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/docs"
+	"github.com/alireza-fa/golang-car-shop/pkg/logging"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+var logger = logging.NewLogger(config.GetConfig())
 
 func InitialServer(cfg *config.Config) {
 	r := gin.New()
@@ -26,14 +29,23 @@ func InitialServer(cfg *config.Config) {
 	RegisterRouter(r)
 	RegisterSwagger(r, cfg)
 
-	r.Run(fmt.Sprintf(":%d", cfg.Server.Port))
+	err := r.Run(fmt.Sprintf(":%d", cfg.Server.Port))
+	if err != nil {
+		logger.Fatal(logging.General, logging.Startup, err.Error(), nil)
+	}
 }
 
 func RegisterValidator() {
 	val, ok := binding.Validator.Engine().(*validator.Validate)
 	if ok {
-		val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
-		val.RegisterValidation("password", validations.PasswordValidator, true)
+		err := val.RegisterValidation("mobile", validations.IranianMobileNumberValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.Startup, err.Error(), nil)
+		}
+		err = val.RegisterValidation("password", validations.PasswordValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.Startup, err.Error(), nil)
+		}
 	}
 }
 
@@ -49,6 +61,9 @@ func RegisterRouter(r *gin.Engine) {
 
 		// Users
 		users := v1.Group("/users")
+
+		// Properties
+		propertyCategories := v1.Group("/property-categories", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 
 		// Base
 		countries := v1.Group("/countries", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
@@ -66,6 +81,9 @@ func RegisterRouter(r *gin.Engine) {
 		routers.Country(countries, conf)
 		routers.City(cities, conf)
 		routers.File(files, conf)
+
+		// Property
+		routers.PropertyCategory(propertyCategories, conf)
 	}
 
 	v2 := api.Group("/v2")
