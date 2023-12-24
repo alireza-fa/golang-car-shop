@@ -28,7 +28,7 @@ func (s *CarModelPriceHistoryService) Create(ctx context.Context, req *dto.Creat
 }
 
 // Update carModelPriceHistory
-func (s *CarModelPriceHistoryService) Update(ctx context.Context, id int, req *dto.UpdateCarModelPriceHistoryRequest) (*dto.CarModelPriceHistoryResponse, error) {
+func (s *CarModelPriceHistoryService) Update(ctx context.Context, req *dto.UpdateCarModelPriceHistoryRequest, id int) (*dto.CarModelPriceHistoryResponse, error) {
 	return s.base.Update(ctx, id, req)
 }
 
