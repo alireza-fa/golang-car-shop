@@ -61,5 +61,5 @@ type UpdateCarModelColorRequest struct {
 
 type CarModelColorResponse struct {
 	Id    int           `json:"id"`
-	Color ColorResponse `json:"color"`
+	Color ColorResponse `json:"color,omitempty"`
 }
