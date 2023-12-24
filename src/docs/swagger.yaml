@@ -30,6 +30,10 @@ definitions:
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CarModelResponse:
     properties:
+      carModelYears:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse'
+        type: array
       carType:
         $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarTypeResponse'
       colors:
@@ -44,6 +48,15 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse:
+    properties:
+      carModelId:
+        type: integer
+      id:
+        type: integer
+      persianYear:
+        $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearWithoutDateResponse'
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CarTypeResponse:
     properties:
@@ -121,6 +134,16 @@ definitions:
     - companyId
     - gearboxId
     - name
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelYearRequest:
+    properties:
+      carModelId:
+        type: integer
+      persianYearId:
+        type: integer
+    required:
+    - carModelId
+    - persianYearId
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreateCarTypeRequest:
     properties:
@@ -316,6 +339,23 @@ definitions:
       items:
         items:
           $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelYearResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse'
         type: array
       pageNumber:
         type: integer
@@ -522,6 +562,15 @@ definitions:
       year:
         type: integer
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PersianYearWithoutDateResponse:
+    properties:
+      id:
+        type: integer
+      persianTitle:
+        type: string
+      year:
+        type: integer
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.PropertyCategoryResponse:
     properties:
       icon:
@@ -613,6 +662,13 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelYearRequest:
+    properties:
+      carModelId:
+        type: integer
+      persianYearId:
+        type: integer
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarTypeRequest:
     properties:
@@ -917,6 +973,169 @@ paths:
       summary: Get CarModelColors
       tags:
       - CarModelColors
+  /v1/car-model-years/:
+    post:
+      consumes:
+      - application/json
+      description: Create a CarModelYear
+      parameters:
+      - description: Create a CarModelYear
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelYearRequest'
+      responses:
+        "201":
+          description: CarModelYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a CarModelYear
+      tags:
+      - CarModelYears
+  /v1/car-model-years/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a CarModelYear
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a CarModelYear
+      tags:
+      - CarModelYears
+    get:
+      consumes:
+      - application/json
+      description: Get a CarModelYear
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: CarModelYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a CarModelYear
+      tags:
+      - CarModelYears
+    put:
+      consumes:
+      - application/json
+      description: Update a CarModelYear
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a CarModelYear
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelYearRequest'
+      responses:
+        "200":
+          description: CarModelYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a CarModelYear
+      tags:
+      - CarModelYears
+  /v1/car-model-years/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get CarModelYears
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: CarModelYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get CarModelYears
+      tags:
+      - CarModelYears
   /v1/car-models/:
     post:
       consumes:

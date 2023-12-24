@@ -31,7 +31,7 @@ func (s *CarModelYearService) Create(ctx context.Context, req *dto.CreateCarMode
 }
 
 // Update carModelYear
-func (s *CarModelYearService) Update(ctx context.Context, id int, req *dto.UpdateCarModelYearRequest) (*dto.CarModelYearResponse, error) {
+func (s *CarModelYearService) Update(ctx context.Context, req *dto.UpdateCarModelYearRequest, id int) (*dto.CarModelYearResponse, error) {
 	return s.base.Update(ctx, id, req)
 }
 
