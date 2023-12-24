@@ -69,7 +69,7 @@ func RegisterRouter(r *gin.Engine) {
 		// Base
 		countries := v1.Group("/countries", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		cities := v1.Group("/cities", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
-		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
+		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		companies := v1.Group("/companies", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		colors := v1.Group("/colors", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		years := v1.Group("/years", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
@@ -81,6 +81,7 @@ func RegisterRouter(r *gin.Engine) {
 		carModelColors := v1.Group("/car-model-colors", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		carModelYears := v1.Group("/car-model-years", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		carModelPriceHistories := v1.Group("/car-model-price-histories", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+		carModelImages := v1.Group("/car-model-images", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
 		// Test
 		routers.Health(health)
@@ -108,6 +109,9 @@ func RegisterRouter(r *gin.Engine) {
 		routers.CarModelColor(carModelColors, conf)
 		routers.CarModelYear(carModelYears, conf)
 		routers.CarModelPriceHistory(carModelPriceHistories, conf)
+		routers.CarModelImage(carModelImages, conf)
+
+		r.Static("/static", "./uploads")
 	}
 
 	v2 := api.Group("/v2")
