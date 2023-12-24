@@ -3378,6 +3378,281 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/years/": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Create a PersianYear",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersianYears"
+                ],
+                "summary": "Create a PersianYear",
+                "parameters": [
+                    {
+                        "description": "Create a PersianYear",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreatePersianYearRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "PersianYear response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/years/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get PersianYears",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersianYears"
+                ],
+                "summary": "Get PersianYears",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PersianYear response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PersianYearResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/years/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get a PersianYear",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersianYears"
+                ],
+                "summary": "Get a PersianYear",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PersianYear response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Update a PersianYear",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersianYears"
+                ],
+                "summary": "Update a PersianYear",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update a PersianYear",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdatePersianYearRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PersianYear response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Delete a PersianYear",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PersianYears"
+                ],
+                "summary": "Delete a PersianYear",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3414,7 +3689,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "color": {
-                    "type": "string"
+                    "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse"
                 },
                 "id": {
                     "type": "integer"
@@ -3638,6 +3913,25 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 15,
                     "minLength": 3
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.CreatePersianYearRequest": {
+            "type": "object",
+            "properties": {
+                "endAt": {
+                    "type": "string"
+                },
+                "persianTitle": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "minLength": 4
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
                 }
             }
         },
@@ -4018,6 +4312,32 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PersianYearResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PropertyCategoryResponse": {
             "type": "object",
             "properties": {
@@ -4090,6 +4410,26 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.Sort"
                     }
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse": {
+            "type": "object",
+            "properties": {
+                "endAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "persianTitle": {
+                    "type": "string"
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
                 }
             }
         },
@@ -4300,6 +4640,25 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 15,
                     "minLength": 3
+                }
+            }
+        },
+        "github_com_alireza-fa_golang-car-shop_api_dto.UpdatePersianYearRequest": {
+            "type": "object",
+            "properties": {
+                "endAt": {
+                    "type": "string"
+                },
+                "persianTitle": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "minLength": 4
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
                 }
             }
         },

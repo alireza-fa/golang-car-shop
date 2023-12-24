@@ -24,7 +24,7 @@ definitions:
   github_com_alireza-fa_golang-car-shop_api_dto.CarModelColorResponse:
     properties:
       color:
-        type: string
+        $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.ColorResponse'
       id:
         type: integer
     type: object
@@ -176,6 +176,19 @@ definitions:
         type: string
     required:
     - name
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreatePersianYearRequest:
+    properties:
+      endAt:
+        type: string
+      persianTitle:
+        maxLength: 4
+        minLength: 4
+        type: string
+      startAt:
+        type: string
+      year:
+        type: integer
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreatePropertyCategoryRequest:
     properties:
@@ -430,6 +443,23 @@ definitions:
       totalRows:
         type: integer
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PersianYearResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PropertyCategoryResponse:
     properties:
       hasNextPage:
@@ -478,6 +508,19 @@ definitions:
         items:
           $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.Sort'
         type: array
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse:
+    properties:
+      endAt:
+        type: string
+      id:
+        type: integer
+      persianTitle:
+        type: string
+      startAt:
+        type: string
+      year:
+        type: integer
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.PropertyCategoryResponse:
     properties:
@@ -622,6 +665,19 @@ definitions:
         type: string
     required:
     - name
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdatePersianYearRequest:
+    properties:
+      endAt:
+        type: string
+      persianTitle:
+        maxLength: 4
+        minLength: 4
+        type: string
+      startAt:
+        type: string
+      year:
+        type: integer
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.UpdatePropertyCategoryRequest:
     properties:
@@ -2712,6 +2768,169 @@ paths:
       summary: Send otp to user
       tags:
       - Users
+  /v1/years/:
+    post:
+      consumes:
+      - application/json
+      description: Create a PersianYear
+      parameters:
+      - description: Create a PersianYear
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreatePersianYearRequest'
+      responses:
+        "201":
+          description: PersianYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a PersianYear
+      tags:
+      - PersianYears
+  /v1/years/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a PersianYear
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a PersianYear
+      tags:
+      - PersianYears
+    get:
+      consumes:
+      - application/json
+      description: Get a PersianYear
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: PersianYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a PersianYear
+      tags:
+      - PersianYears
+    put:
+      consumes:
+      - application/json
+      description: Update a PersianYear
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a PersianYear
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdatePersianYearRequest'
+      responses:
+        "200":
+          description: PersianYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PersianYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a PersianYear
+      tags:
+      - PersianYears
+  /v1/years/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get PersianYears
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: PersianYear response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_PersianYearResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get PersianYears
+      tags:
+      - PersianYears
 securityDefinitions:
   AuthBearer:
     in: header

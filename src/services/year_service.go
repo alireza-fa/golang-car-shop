@@ -28,7 +28,7 @@ func (s *PersianYearService) Create(ctx context.Context, req *dto.CreatePersianY
 }
 
 // Update year
-func (s *PersianYearService) Update(ctx context.Context, id int, req *dto.UpdatePersianYearRequest) (*dto.PersianYearResponse, error) {
+func (s *PersianYearService) Update(ctx context.Context, req *dto.UpdatePersianYearRequest, id int) (*dto.PersianYearResponse, error) {
 	return s.base.Update(ctx, id, req)
 }
 

@@ -72,6 +72,7 @@ func RegisterRouter(r *gin.Engine) {
 		files := v1.Group("/files", middlewares.Authentication(conf), middlewares.Authorization([]string{"admin"}))
 		companies := v1.Group("/companies", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 		colors := v1.Group("/colors", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
+		years := v1.Group("/years", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
 
 		// Car
 		carTypes := v1.Group("/car-types", middlewares.Authentication(conf), middlewares.Authorization([]string{"default"}))
@@ -92,6 +93,7 @@ func RegisterRouter(r *gin.Engine) {
 		routers.File(files, conf)
 		routers.Company(companies, conf)
 		routers.Color(colors, conf)
+		routers.Year(years, conf)
 
 		// Property
 		routers.PropertyCategory(propertyCategories, conf)
