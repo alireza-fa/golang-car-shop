@@ -28,6 +28,17 @@ definitions:
       id:
         type: integer
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CarModelImageResponse:
+    properties:
+      carModelId:
+        type: integer
+      id:
+        type: integer
+      image:
+        $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.FileResponse'
+      isMainImage:
+        type: boolean
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CarModelPriceHistoryResponse:
     properties:
       carModelYearId:
@@ -39,8 +50,27 @@ definitions:
       priceAt:
         type: string
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CarModelPropertyResponse:
+    properties:
+      carModelId:
+        type: integer
+      id:
+        type: integer
+      property:
+        $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PropertyResponse'
+      value:
+        type: string
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CarModelResponse:
     properties:
+      carModelImages:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelImageResponse'
+        type: array
+      carModelProperties:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelPropertyResponse'
+        type: array
       carModelYears:
         items:
           $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelYearResponse'
@@ -128,6 +158,18 @@ definitions:
     - carModelId
     - colorId
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelImageRequest:
+    properties:
+      carModelId:
+        type: integer
+      imageId:
+        type: integer
+      isMainImage:
+        type: boolean
+    required:
+    - carModelId
+    - imageId
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelPriceHistoryRequest:
     properties:
       carModelYearId:
@@ -140,6 +182,20 @@ definitions:
     - carModelYearId
     - price
     - priceAt
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelPropertyRequest:
+    properties:
+      carModelId:
+        type: integer
+      propertyId:
+        type: integer
+      value:
+        maxLength: 100
+        type: string
+    required:
+    - carModelId
+    - propertyId
+    - value
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelRequest:
     properties:
@@ -354,6 +410,23 @@ definitions:
       totalRows:
         type: integer
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelImageResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelImageResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
   ? github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelPriceHistoryResponse
   : properties:
       hasNextPage:
@@ -363,6 +436,23 @@ definitions:
       items:
         items:
           $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelPriceHistoryResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelPropertyResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelPropertyResponse'
         type: array
       pageNumber:
         type: integer
@@ -693,12 +783,25 @@ definitions:
       colorId:
         type: integer
     type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelImageRequest:
+    properties:
+      isMainImage:
+        type: boolean
+    type: object
   github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelPriceHistoryRequest:
     properties:
       price:
         type: number
       priceAt:
         type: string
+    type: object
+  github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelPropertyRequest:
+    properties:
+      value:
+        maxLength: 100
+        type: string
+    required:
+    - value
     type: object
   github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelRequest:
     properties:
@@ -1021,6 +1124,169 @@ paths:
       summary: Get CarModelColors
       tags:
       - CarModelColors
+  /v1/car-model-images/:
+    post:
+      consumes:
+      - application/json
+      description: Create a CarModelImage
+      parameters:
+      - description: Create a CarModelImage
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelImageRequest'
+      responses:
+        "201":
+          description: CarModelImage response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelImageResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a CarModelImage
+      tags:
+      - CarModelImages
+  /v1/car-model-images/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a CarModelImage
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a CarModelImage
+      tags:
+      - CarModelImages
+    get:
+      consumes:
+      - application/json
+      description: Get a CarModelImage
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: CarModelImage response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelImageResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a CarModelImage
+      tags:
+      - CarModelImages
+    put:
+      consumes:
+      - application/json
+      description: Update a CarModelImage
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a CarModelImage
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelImageRequest'
+      responses:
+        "200":
+          description: CarModelImage response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelImageResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a CarModelImage
+      tags:
+      - CarModelImages
+  /v1/car-model-images/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get CarModelImages
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: CarModelImage response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelImageResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get CarModelImages
+      tags:
+      - CarModelImages
   /v1/car-model-price-histories/:
     post:
       consumes:
@@ -1184,6 +1450,169 @@ paths:
       summary: Get CarModelPriceHistories
       tags:
       - CarModelPriceHistories
+  /v1/car-model-properties/:
+    post:
+      consumes:
+      - application/json
+      description: Create a CarModelProperty
+      parameters:
+      - description: Create a CarModelProperty
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CreateCarModelPropertyRequest'
+      responses:
+        "201":
+          description: CarModelProperty response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a CarModelProperty
+      tags:
+      - CarModelProperties
+  /v1/car-model-properties/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a CarModelProperty
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a CarModelProperty
+      tags:
+      - CarModelProperties
+    get:
+      consumes:
+      - application/json
+      description: Get a CarModelProperty
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: CarModelProperty response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a CarModelProperty
+      tags:
+      - CarModelProperties
+    put:
+      consumes:
+      - application/json
+      description: Update a CarModelProperty
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a CarModelProperty
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.UpdateCarModelPropertyRequest'
+      responses:
+        "200":
+          description: CarModelProperty response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a CarModelProperty
+      tags:
+      - CarModelProperties
+  /v1/car-model-properties/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get CarModelProperties
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: CarModelProperty response
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_dto.PagedList-github_com_alireza-fa_golang-car-shop_api_dto_CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/github_com_alireza-fa_golang-car-shop_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get CarModelProperties
+      tags:
+      - CarModelProperties
   /v1/car-model-years/:
     post:
       consumes:
