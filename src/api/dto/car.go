@@ -52,6 +52,7 @@ type CarModelResponse struct {
 	CarModelYears      []CarModelYearResponse     `json:"carModelYears,omitempty"`
 	CarModelImages     []CarModelImageResponse    `json:"carModelImages,omitempty"`
 	CarModelProperties []CarModelPropertyResponse `json:"carModelProperties,omitempty"`
+	CarModelComments   []CarModelCommentResponse
 }
 
 type CreateCarModelColorRequest struct {
@@ -150,8 +151,8 @@ type UpdateCarModelCommentRequest struct {
 type CarModelCommentResponse struct {
 	Id         int `json:"id"`
 	CarModelId int `json:"carModelId"`
-	User
-	Message string `json:"message"`
+	User       UserResponse
+	Message    string `json:"message"`
 }
 
 type UserResponse struct {
