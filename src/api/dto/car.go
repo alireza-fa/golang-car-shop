@@ -136,3 +136,28 @@ type CarModelPropertyResponse struct {
 	Property   PropertyResponse `json:"property,omitempty"`
 	Value      string           `json:"value"`
 }
+
+type CreateCarModelCommentRequest struct {
+	CarModelId int    `json:"carModelId" binding:"required"`
+	UserId     int    `json:"userId"`
+	Message    string `json:"message" binding:"required,max=100"`
+}
+
+type UpdateCarModelCommentRequest struct {
+	Message string `json:"message" binding:"required,max=100"`
+}
+
+type CarModelCommentResponse struct {
+	Id         int `json:"id"`
+	CarModelId int `json:"carModelId"`
+	User
+	Message string `json:"message"`
+}
+
+type UserResponse struct {
+	Id        int    `json:"id"`
+	Username  string `json:"username"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
+}
