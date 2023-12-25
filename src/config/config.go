@@ -10,8 +10,9 @@ import (
 
 type Config struct {
 	Server struct {
-		Port    int    `yaml:"port"`
-		RunMode string `yaml:"runMode"`
+		InternalPort int    `yaml:"internalPort"`
+		ExternalPort int    `json:"externalPort"`
+		RunMode      string `yaml:"runMode"`
 	}
 	Logger struct {
 		FilePath string `yaml:"filePath"`

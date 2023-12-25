@@ -1,16 +1,16 @@
 server:
-  internalPort: 5000
-  externalPort: 0
+  internalPort: 5005
+  externalPort: 5005
   runMode: release
 logger:
-  filePath: /app/logs/
+  filePath: /logs/
   encoding: json
   level: debug
   logger: zap
 cors:
   allowOrigins: "*"
 postgres:
-  host: postgres_container
+  host: localhost
   port: 5432
   user: postgres
   password: admin
@@ -20,7 +20,7 @@ postgres:
   maxOpenConns: 100
   connMaxLifetime: 5
 redis:
-  host: redis_container
+  host: localhost
   port: 6379
   password: password
   db: 0
@@ -44,5 +44,5 @@ otp:
 jwt:
   secret: "mySecretKey"
   refreshSecret: "mySecretKey"
-  accessTokenExpireDuration: 60
+  accessTokenExpireDuration: 1440
   refreshTokenExpireDuration: 60

@@ -21,6 +21,7 @@ import (
 var logger = logging.NewLogger(config.GetConfig())
 
 func InitialServer(cfg *config.Config) {
+	gin.SetMode(cfg.Server.RunMode)
 	r := gin.New()
 
 	RegisterValidator()
@@ -34,7 +35,8 @@ func InitialServer(cfg *config.Config) {
 	RegisterRouter(r)
 	RegisterSwagger(r, cfg)
 
-	err := r.Run(fmt.Sprintf(":%d", cfg.Server.Port))
+	logger.Info(logging.General, logging.Startup, "Started", nil)
+	err := r.Run(fmt.Sprintf(":%d", cfg.Server.InternalPort))
 	if err != nil {
 		logger.Fatal(logging.General, logging.Startup, err.Error(), nil)
 	}
@@ -137,7 +139,7 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.Description = "golang web api"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.BasePath = "/api"
-	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%d", cfg.Server.Port)
+	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%d", cfg.Server.ExternalPort)
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
