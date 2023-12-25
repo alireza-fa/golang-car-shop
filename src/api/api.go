@@ -8,9 +8,12 @@ import (
 	"github.com/alireza-fa/golang-car-shop/config"
 	"github.com/alireza-fa/golang-car-shop/docs"
 	"github.com/alireza-fa/golang-car-shop/pkg/logging"
+	"github.com/alireza-fa/golang-car-shop/pkg/metrics"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -21,9 +24,11 @@ func InitialServer(cfg *config.Config) {
 	r := gin.New()
 
 	RegisterValidator()
+	RegisterPrometheus()
 
 	r.Use(middlewares.DefaultStructuredLogger(cfg))
 	r.Use(middlewares.Cors(cfg))
+	r.Use(middlewares.Prometheus())
 	r.Use(gin.Logger(), gin.CustomRecovery(middlewares.ErrorHandler) /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
 	RegisterRouter(r)
@@ -116,6 +121,8 @@ func RegisterRouter(r *gin.Engine) {
 		routers.CarModelComment(carModelComments, conf)
 
 		r.Static("/static", "./uploads")
+
+		r.GET("/metrics", gin.WrapH(promhttp.Handler()))
 	}
 
 	v2 := api.Group("/v2")
@@ -134,4 +141,16 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
+func RegisterPrometheus() {
+	err := prometheus.Register(metrics.DbCall)
+	if err != nil {
+		logger.Error(logging.Prometheus, logging.Startup, err.Error(), nil)
+	}
+
+	err = prometheus.Register(metrics.HttpDuration)
+	if err != nil {
+		logger.Error(logging.Prometheus, logging.Startup, err.Error(), nil)
+	}
 }
