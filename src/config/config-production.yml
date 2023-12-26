@@ -1,6 +1,6 @@
 server:
-  internalPort: 5005
-  externalPort: 5005
+  internalPort: 5010
+  externalPort: 5010
   runMode: release
 logger:
   filePath: /logs/
